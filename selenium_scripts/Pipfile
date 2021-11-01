@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 selenium = "*"
 pytest = "*"
+importlib-metadata = "*"
 
 [dev-packages]
 

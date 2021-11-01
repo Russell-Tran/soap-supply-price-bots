@@ -10,6 +10,11 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
+#
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
 class TestYahoosomething():
   def setup_method(self, method):
     self.driver = webdriver.Firefox()
@@ -26,6 +31,20 @@ class TestYahoosomething():
     self.driver.find_element(By.ID, "yfin-usr-qry").send_keys("tsla")
     self.driver.find_element(By.ID, "yfin-usr-qry").send_keys(Keys.ENTER)
     self.driver.execute_script("window.scrollTo(0,102)")
-    self.vars["x"] = self.driver.find_element(By.CSS_SELECTOR, ".Fz\\(36px\\)").text
-    print(str(self.vars["x"]))
+    #self.vars["x"] = self.driver.find_element(By.CSS_SELECTOR, ".Fz\\(36px\\)").text
+    #self.driver.find_element(By.CLASS_NAME, "Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(ib)").text
+    #self.vars["stock_price"] = self.driver.find_element_by_class_name("Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(ib)").text
+        
+    stock_price_css_selector = "#quote-header-info > div > div > div > span[data-reactid='49']" # https://stackoverflow.com/a/48458527/14775744
+    timeout = 5
+    try:
+      # https://stackoverflow.com/a/37303115/14775744
+      element_present = EC.presence_of_element_located((By.CSS_SELECTOR, stock_price_css_selector))
+      WebDriverWait(self.driver, timeout).until(element_present)
+    except TimeoutException:
+      print("Timed out waiting for page to load")
+
+    price_per_share = self.driver.find_element_by_css_selector(stock_price_css_selector).text
+    self.vars["stock_price"] = price_per_share
+    print(str(self.vars["stock_price"]))
   
