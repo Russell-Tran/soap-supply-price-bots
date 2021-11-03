@@ -35,7 +35,7 @@ class TestYahoosomething():
     #self.driver.find_element(By.CLASS_NAME, "Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(ib)").text
     #self.vars["stock_price"] = self.driver.find_element_by_class_name("Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(ib)").text
         
-    stock_price_css_selector = "#quote-header-info > div > div > div > span[data-reactid='49']" # https://stackoverflow.com/a/48458527/14775744
+    stock_price_css_selector = "#quote-header-info > div > div > div > span[data-reactid='47']" # https://stackoverflow.com/a/48458527/14775744
     timeout = 5
     try:
       # https://stackoverflow.com/a/37303115/14775744
