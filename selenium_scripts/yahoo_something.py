@@ -21,6 +21,7 @@ class TestYahoosomething():
     self.vars = {}
   
   def teardown_method(self, method):
+    self.driver.stop_client() # This needs to be added in order to close the window
     self.driver.quit()
   
   def test_yahoosomething(self):
