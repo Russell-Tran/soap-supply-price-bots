@@ -39,20 +39,20 @@ class Brambleberry():
     except TimeoutException:
       print("Timed out waiting for page to load")
 
-    time.sleep(5)
+    time.sleep(3)
     # Cookie
     self.driver.find_element(By.ID, "CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll").click()
-    time.sleep(10)
+    time.sleep(3)
 
     # Product
     self.driver.find_element(By.LINK_TEXT, "5 lbs").click()
-    time.sleep(3)
+    time.sleep(1)
 
     self.driver.find_element(By.ID, "add-to-cart").click()
 
     # Cart
     self.driver.get("https://www.brambleberry.com/shoppingbag")
-    time.sleep(5)
+    time.sleep(2)
 
     #self.driver.execute_script("window.scrollTo(0,7)")
     #self.driver.execute_script("window.scrollTo(0,69)")
@@ -70,7 +70,7 @@ class Brambleberry():
     self.driver.find_element(By.ID, "dwfrm_shippingestimator_shippingestimate_zipcode").send_keys("92673")
     time.sleep(1)
     self.driver.find_element(By.NAME, "dwfrm_cart_estimate").click()
-    time.sleep(5)
+    time.sleep(2)
 
     shipping = self.driver.find_element(By.CSS_SELECTOR, ".order-shipping > .align-right").text
     total = self.driver.find_element(By.CSS_SELECTOR, ".order-value").text
