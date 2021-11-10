@@ -56,10 +56,15 @@ class Brambleberry():
 
     #self.driver.execute_script("window.scrollTo(0,7)")
     #self.driver.execute_script("window.scrollTo(0,69)")
-    element = self.driver.find_element(By.LINK_TEXT, "Calculate")
-    actions = ActionChains(self.driver)
-    actions.move_to_element(element).perform()
-    self.driver.find_element(By.LINK_TEXT, "Calculate").click()
+    #element = self.driver.find_element(By.CLASS_NAME, "estimate-shipping")
+    #actions = ActionChains(self.driver)
+    #actions.move_to_element(element).click().perform()
+
+    # https://stackoverflow.com/a/63157469/14775744
+    # https://stackoverflow.com/questions/41857614/how-to-find-xpath-of-an-element-in-firefox-inspector
+    xpath = "/html/body/div[1]/div[3]/div/div[2]/div[2]/form/div/div[1]/table/tbody/tr[5]/td[1]/table/tbody/tr[1]/td/a"
+    element = self.driver.find_element_by_xpath(xpath)
+    self.driver.execute_script("arguments[0].click();", element)
 
     self.driver.find_element(By.ID, "dwfrm_shippingestimator_shippingestimate_zipcode").click()
     self.driver.find_element(By.ID, "dwfrm_shippingestimator_shippingestimate_zipcode").send_keys("92673")
