@@ -63,7 +63,7 @@ class Brambleberry():
     # https://stackoverflow.com/a/63157469/14775744
     # https://stackoverflow.com/questions/41857614/how-to-find-xpath-of-an-element-in-firefox-inspector
     xpath = "/html/body/div[1]/div[3]/div/div[2]/div[2]/form/div/div[1]/table/tbody/tr[5]/td[1]/table/tbody/tr[1]/td/a"
-    element = self.driver.find_element_by_xpath(xpath)
+    element = self.driver.find_element(By.XPATH, xpath)
     self.driver.execute_script("arguments[0].click();", element)
 
     self.driver.find_element(By.ID, "dwfrm_shippingestimator_shippingestimate_zipcode").click()
