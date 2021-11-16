@@ -1,0 +1,24 @@
+{
+    "shipping_address" : {
+        "first_name" : "John",
+        "last_name" : "Snow",
+        "email" : "winteriscoming@gmail.com",
+        "phone" : "(949) 361-8200",
+        "fax" : "(949) 493-8729",
+        "address" : "15 Calle Loyola",
+        "city" : "San Clemente",
+        "state" : "California",
+        "zipcode" : "92673"
+    },
+    "billing_address" : {
+        "first_name" : "John",
+        "last_name" : "Snow",
+        "email" : "winteriscoming@gmail.com",
+        "phone" : "(949) 361-8200",
+        "fax" : "(949) 493-8729",
+        "address" : "15 Calle Loyola",
+        "city" : "San Clemente",
+        "state" : "California",
+        "zipcode" : "92673"
+    }
+}
