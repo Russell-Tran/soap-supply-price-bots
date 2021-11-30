@@ -41,17 +41,9 @@ class MountainRoseHerbs():
             d.find_element(By.CSS_SELECTOR, "div.right > div:nth-child(3) > span:nth-child(2) > span:nth-child(1)").click()   
             time.sleep(3)
             element = d.find_elements(By.ID, "shipping-state")[1]
-
-            hover = ActionChains(d).move_to_element(element) # https://stackoverflow.com/a/8261754/14775744, https://stackoverflow.com/a/50279295/14775744
-            hover.click()
-            hover.perform()
-
-            #WebDriverWait(d, 30).until(EC.element_to_be_clickable(element))
-            #element.location_once_scrolled_into_view
-            #time.sleep(3)
-            #Select(element).select_by_visible_text(p['billing_address']['state'])
-            #d.find_element(By.ID, "shipping-zip").send_keys(p['billing_address']['zipcode'])
-            #d.find_element(By.CSS_SELECTOR, "div.right > div:nth-child(3) > div:nth-child(3) > form:nth-child(1) > div:nth-child(4) > button:nth-child(1)").click()
+            Select(element).select_by_visible_text(p['billing_address']['state'])
+            element = d.find_elements(By.ID, "shipping-zip")[1].send_keys(p['billing_address']['zipcode'])
+            d.find_element(By.CSS_SELECTOR, "div.right > div:nth-child(3) > div:nth-child(3) > form:nth-child(1) > div:nth-child(4) > button:nth-child(1)").click()
 
             print("Done")
             time.sleep(5)
