@@ -1,3 +1,4 @@
+# INCOMPLETE!!!
 """
 Zap Sourcing 2021
 """
@@ -33,14 +34,9 @@ class RusticEscentuals():
         
         try:
             d.get(product_url)
-            time.sleep(15) # TODO: Got held up by cloudflare
-            # Interestingly, the following line triggers cloudflare:
-            # d.find_element(By.CSS_SELECTOR, "#Buy > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(1) > input:nth-child(3)").click() 
-            # So instead we use:
-            print("A")
-            d.find_element(By.XPATH, '//*[@id="ProductPriceIDText"]').click()
-            print("B")
-            time.sleep(10)
+            time.sleep(3)
+            d.find_elements(By.ID, "ProductPriceIDText")[1].click()
+            time.sleep(20)
             d.find_element(By.ID, "MainContent_ChildContent_ParentData_btnAddToCart_0").click()
             """
             print("C")
@@ -78,8 +74,9 @@ class RusticEscentuals():
             print("Total: ", total)
             print("Done")
             time.sleep(5)
-            """
+            
             self.stop()
+            """
         except Exception as e:
             self.stop()
             raise e
