@@ -36,18 +36,28 @@ class MountainRoseHerbs():
             d.find_element(By.ID, "attribute-2970").click() # The 5 lb option
             d.find_element(By.CSS_SELECTOR, "span.product-quantity-toggle:nth-child(1)").click() # Increase qty from 0 to 1
             d.find_element(By.CSS_SELECTOR, "button.button:nth-child(2) > span:nth-child(1)").click()
+            time.sleep(3)
             d.get("https://mountainroseherbs.com/cart.php")
             d.find_element(By.CSS_SELECTOR, "div.right > div:nth-child(3) > span:nth-child(2) > span:nth-child(1)").click()   
-            element = d.find_element(By.ID, "shipping-state")
-            Select(element).select_by_visible_text(p['billing_address']['state'])
-            d.find_element(By.ID, "shipping-zip").send_keys(p['billing_address']['zipcode'])
-            d.find_element(By.CSS_SELECTOR, "div.right > div:nth-child(3) > div:nth-child(3) > form:nth-child(1) > div:nth-child(4) > button:nth-child(1)").click()
+            time.sleep(3)
+            element = d.find_elements(By.ID, "shipping-state")[1]
+
+            hover = ActionChains(d).move_to_element(element) # https://stackoverflow.com/a/8261754/14775744, https://stackoverflow.com/a/50279295/14775744
+            hover.click()
+            hover.perform()
+
+            #WebDriverWait(d, 30).until(EC.element_to_be_clickable(element))
+            #element.location_once_scrolled_into_view
+            #time.sleep(3)
+            #Select(element).select_by_visible_text(p['billing_address']['state'])
+            #d.find_element(By.ID, "shipping-zip").send_keys(p['billing_address']['zipcode'])
+            #d.find_element(By.CSS_SELECTOR, "div.right > div:nth-child(3) > div:nth-child(3) > form:nth-child(1) > div:nth-child(4) > button:nth-child(1)").click()
 
             print("Done")
             time.sleep(5)
-            self.stop()
+            #self.stop()
         except Exception as e:
-            self.stop()
+            #self.stop()
             raise e
 
 if __name__ == "__main__":
