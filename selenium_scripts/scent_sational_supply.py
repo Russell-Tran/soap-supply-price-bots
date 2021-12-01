@@ -1,4 +1,3 @@
-# INCOMPLETE!!!
 """
 Zap Sourcing 2021
 """
