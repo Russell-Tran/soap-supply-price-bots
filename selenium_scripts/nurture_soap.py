@@ -52,12 +52,18 @@ class NurtureSoap():
             d.find_element(By.ID, "checkout_shipping_address_phone").send_keys(p['shipping_address']['phone'])
 
             d.find_element(By.ID, "continue_button").click()
-            # print("Subtotal: ", subtotal)
-            # print("Shipping: ", shipping)
-            # print("Total: ", total)
-            # print("Done")
-            # time.sleep(5)
-            # self.stop()
+
+            time.sleep(5)
+            subtotal = d.find_element(By.CSS_SELECTOR, ".total-line--subtotal > td:nth-child(2) > span:nth-child(1)").text
+            shipping = d.find_element(By.CSS_SELECTOR, "tr.total-line:nth-child(2) > td:nth-child(2) > span:nth-child(1)").text
+            total = d.find_element(By.CSS_SELECTOR, ".payment-due__price").text
+
+            print("Subtotal: ", subtotal)
+            print("Shipping: ", shipping)
+            print("Total: ", total)
+            print("Done")
+            time.sleep(5)
+            self.stop()
 
         except Exception as e:
             #self.stop()
