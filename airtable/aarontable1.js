@@ -33,11 +33,9 @@ let response = await fetch(fantastic_engine_url, {
     },
 });
 
+let output = await response.json();
 await table.updateRecordAsync(record_id, {
-    "subtotal": "$4.50",
-    "shipping" : "$0.50",
-    "total" : "$5.00"
+    "subtotal": output.subtotal,
+    "shipping" : output.shipping,
+    "total" : output.total
 });
-
-//console.log(await response.json());
-await response;
