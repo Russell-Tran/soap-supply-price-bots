@@ -20,7 +20,9 @@ from selenium.webdriver.common.by import By
 
 class EssentialDepot():
     def start(self):
-        self.driver = webdriver.Firefox()
+        options = webdriver.FirefoxOptions()
+        options.add_argument("--headless") # https://stackoverflow.com/a/70125885/14775744
+        self.driver = webdriver.Firefox(options=options)
 
     def stop(self):
         self.driver.stop_client() # This needs to be added in order to close the window
