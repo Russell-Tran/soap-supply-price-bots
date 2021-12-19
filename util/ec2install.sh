@@ -1,5 +1,8 @@
 # Run with sudo
-
+# Make sure to add the following lines to ~/.bashrc
+# export PATH=$PATH:/home/ubuntu/
+# export PATH=$PATH:/home/ubuntu/.local/bin/
+# Don't forget to `source .bashrc` if you want to have this modification take effect without logging out and back in to the instance.
 
 # === For selenium_scripts ===
 add-apt-repository ppa:deadsnakes/ppa   
@@ -12,10 +15,6 @@ apt install firefox
 wget https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-linux64.tar.gz -O /home/ubuntu/geckodriver-v0.30.0-linux64.tar.gz
 tar -xvzf /home/ubuntu/geckodriver* -C /home/ubuntu/
 chmod +x /home/ubuntu/geckodriver
-
-# Make sure to add the following line to ~/.bashrc
-# export PATH=$PATH:/home/ubuntu/
-# Don't forget to `source .bashrc` if you want to have this modification take effect without logging out and back in to the instance.
 
 # === For dispatch ===
 apt install libnss3-tools
