@@ -1,5 +1,7 @@
 # Run with sudo
 
+
+# === For selenium_scripts ===
 add-apt-repository ppa:deadsnakes/ppa   
 apt-get update 
 apt install python3.7
@@ -14,3 +16,6 @@ chmod +x /home/ubuntu/geckodriver
 # Make sure to add the following line to ~/.bashrc
 # export PATH=$PATH:/home/ubuntu/
 # Don't forget to `source .bashrc` if you want to have this modification take effect without logging out and back in to the instance.
+
+# === For dispatch ===
+apt install libnss3-tools
