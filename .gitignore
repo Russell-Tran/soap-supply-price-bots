@@ -1,3 +1,4 @@
 config.json
 geckodriver.log
 .DS_Store
+selenium_scripts/__pycache__
