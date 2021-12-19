@@ -21,7 +21,9 @@ from selenium.webdriver.common.by import By
 
 class NurtureSoap():
     def start(self):
-        self.driver = webdriver.Firefox()
+        options = webdriver.FirefoxOptions()
+        options.add_argument("--headless") # https://stackoverflow.com/a/70125885/14775744
+        self.driver = webdriver.Firefox(options=options)
 
     def stop(self):
         self.driver.stop_client() # This needs to be added in order to close the window
@@ -34,6 +36,7 @@ class NurtureSoap():
         
         try:
             d.get(product_url)
+            d.set_window_size(1843, 763) ## << EXPERIMENTAL!!
             d.find_element(By.CSS_SELECTOR, "button.product-form__add-button").click()
             time.sleep(3)
             d.get(shopping_cart_url)
