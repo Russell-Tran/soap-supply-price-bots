@@ -4,6 +4,7 @@ add-apt-repository ppa:deadsnakes/ppa
 apt-get update 
 apt install python3.7
 apt install pipenv
+apt install firefox
 
 # https://askubuntu.com/a/871077
 wget https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-linux64.tar.gz -O /home/ubuntu/geckodriver-v0.30.0-linux64.tar.gz
