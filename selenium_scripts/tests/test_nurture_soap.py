@@ -2,7 +2,6 @@ import pytest
 import json
 from context import bot, sites
 from helper import *
-from bot import *
 from sites import *
 
 @pytest.mark.parametrize(('profile_json', 'product_url'),[
