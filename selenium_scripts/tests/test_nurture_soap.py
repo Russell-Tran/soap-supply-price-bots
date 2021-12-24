@@ -1,6 +1,7 @@
 import pytest
 import json
-from context import bot, sites, exactly_one_price, generic_sim
+from context import bot, sites
+from helper import *
 from bot import *
 from sites import *
 
