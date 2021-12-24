@@ -2,6 +2,7 @@
 Zap Sourcing 2021
 """
 # Used by children classes
+import typing
 import time
 import re
 from selenium import webdriver
@@ -15,6 +16,29 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+
+class Profile():
+    def __init__(self, data):
+        self.first_name = None
+        self.last_name = None
+        self.email = None
+        self.phone = None
+        self.fax = None
+        self.company = None
+        self.address = None
+        self.address_2 = None
+        self.city = None
+        self.state = None
+        self.country = None
+        self.zipcode = None
+        for name, value in data.items():
+            setattr(self, name, self._wrap(value))
+
+    def _wrap(self, value):
+        if isinstance(value, (tuple, list, set, frozenset)): 
+            return type(value)([self._wrap(v) for v in value])
+        else:
+            return Struct(value) if isinstance(value, dict) else value
 
 class Result():
     def __init__(self):
@@ -37,9 +61,6 @@ class Bot():
         self.driver.stop_client() # This needs to be added in order to close the window
         self.driver.quit()
 
-    """
-    p is a dictionary; `profile`
-    """
-    def run(self, product_url, shopping_cart_url, p):
+    def run(self, product_url, shopping_cart_url, p: Profile):
         pass
         
