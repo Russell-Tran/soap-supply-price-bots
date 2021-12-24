@@ -8,14 +8,17 @@ class NurtureSoap(Bot):
         super().__init__("https://nurturesoap.com/cart")
 
     def run(self, product_url: str, p: Profile):
+        print("Hi there! It's me, nurture soap!!!!!")
+
+
         d = self.driver
         shopping_cart_url = self.shopping_cart_url
         d.get(product_url)
-        time.sleep(3)
+        time.sleep(2)
         d.find_element(By.CSS_SELECTOR, "button.product-form__add-button").click()
-        time.sleep(3)
+        time.sleep(2)
         d.get(shopping_cart_url)
-        time.sleep(3)
+        time.sleep(2)
         d.find_element(By.CSS_SELECTOR, ".cart-recap__checkout").click()
         d.find_element(By.ID, "checkout_email").send_keys(p.email)
         d.find_element(By.ID, "checkout_shipping_address_first_name").send_keys(p.first_name)
@@ -29,7 +32,7 @@ class NurtureSoap(Bot):
         d.find_element(By.ID, "checkout_shipping_address_zip").send_keys(p.zipcode)
         d.find_element(By.ID, "checkout_shipping_address_phone").send_keys(p.phone)
         d.find_element(By.ID, "continue_button").click()
-        time.sleep(10)
+        time.sleep(5)
 
         result = Result()
         result.subtotal = d.find_element(By.CSS_SELECTOR, ".total-line--subtotal > td:nth-child(2) > span:nth-child(1)").text
