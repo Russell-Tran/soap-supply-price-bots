@@ -12,8 +12,8 @@ let table = base.getTable("aarontable1");
 let response = await fetch(fantastic_engine_url, {
     method: 'POST',
     body: JSON.stringify({
-        'url' : product_url,
-        "shipping_address" : {
+        'product_url' : product_url,
+        'profile' : {
             "first_name" : "John",
             "last_name" : "Snow",
             "email" : "winteriscoming@gmail.com",

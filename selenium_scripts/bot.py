@@ -18,7 +18,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 class Profile():
-    def __init__(self, data):
+    """
+    https://stackoverflow.com/a/6993694/14775744
+    """
+    def __init__(self, profile_dict):
         self.first_name = None
         self.last_name = None
         self.email = None
@@ -31,14 +34,14 @@ class Profile():
         self.state = None
         self.country = None
         self.zipcode = None
-        for name, value in data.items():
+        for name, value in profile_dict.items():
             setattr(self, name, self._wrap(value))
 
     def _wrap(self, value):
         if isinstance(value, (tuple, list, set, frozenset)): 
             return type(value)([self._wrap(v) for v in value])
         else:
-            return Struct(value) if isinstance(value, dict) else value
+            return Profile(value) if isinstance(value, dict) else value
 
 class Result():
     def __init__(self):

@@ -2,6 +2,16 @@
 * https://pancy.medium.com/running-a-https-python-server-on-ec2-in-5-minutes-6c1f0444a0cf
 * https://caddyserver.com/docs/install#debian-ubuntu-raspbian
 
+```
+gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app
+```
+
+and simultaneously,
+
+```
+caddy reverse-proxy --from [Public IPv4 DNS HERE] --to localhost:8000
+```
+
 ## Notes
 The Caddyfile from the tutorial did not work. Instead use:
 ```

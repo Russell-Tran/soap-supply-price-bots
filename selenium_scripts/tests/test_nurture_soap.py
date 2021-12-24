@@ -6,7 +6,9 @@ from sites import *
 
 @pytest.mark.parametrize(('profile_json', 'product_url'),[
                          ('tests/example_profile.json', "https://nurturesoap.com/collections/perfect-in-soap-fragrance-oils/products/black-raspberry-vanilla-fragrance-oil"),
-                         ('tests/example_profile.json', "https://nurturesoap.com/collections/perfect-in-soap-fragrance-oils/products/cavalier-fragrance-oil")])
+                         ('tests/example_profile.json', "https://nurturesoap.com/collections/perfect-in-soap-fragrance-oils/products/cavalier-fragrance-oil"),
+                         ('tests/example_profile_penn.json', "https://nurturesoap.com/collections/perfect-in-soap-fragrance-oils/products/black-raspberry-vanilla-fragrance-oil"),
+                         ('tests/example_profile_penn.json', "https://nurturesoap.com/collections/perfect-in-soap-fragrance-oils/products/cavalier-fragrance-oil")])
 def test_nurture_soap(profile_json, product_url):
     result = generic_sim(NurtureSoap(), profile_json, product_url)
     assert exactly_one_price(result.subtotal)
