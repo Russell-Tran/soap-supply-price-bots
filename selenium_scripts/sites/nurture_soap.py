@@ -4,8 +4,12 @@ Zap Sourcing 2021
 from bot import *
 
 class NurtureSoap(Bot):
-    def run(self, product_url, shopping_cart_url, p: Profile):
+    def __init__(self):
+        super().__init__("https://nurturesoap.com/cart")
+
+    def run(self, product_url: str, p: Profile):
         d = self.driver
+        shopping_cart_url = self.shopping_cart_url
         d.get(product_url)
         time.sleep(3)
         d.find_element(By.CSS_SELECTOR, "button.product-form__add-button").click()

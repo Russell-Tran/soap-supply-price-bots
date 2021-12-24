@@ -48,8 +48,8 @@ class Result():
         self.total = None
 
 class Bot():
-    def __init__(self):
-        pass
+    def __init__(self, shopping_cart_url):
+        self.shopping_cart_url = shopping_cart_url
 
     def start(self):
         options = webdriver.FirefoxOptions()
@@ -61,6 +61,6 @@ class Bot():
         self.driver.stop_client() # This needs to be added in order to close the window
         self.driver.quit()
 
-    def run(self, product_url, shopping_cart_url, p: Profile):
-        pass
+    def run(self, product_url: str, p: Profile):
+        raise Exception("run method not implemented for class {}".format(self.__class__.__name__))
         
