@@ -1,6 +1,10 @@
+import importlib # TEMPORARY DISGUSTING
+#selenium_scripts = importlib.import_module("lib")
+
 from typing import Optional
 from fastapi import Request, FastAPI
-from selenium_scripts import bot, picking
+#from selenium_scripts import bot, picking
+from lib import bot, picking
 
 app = FastAPI(title="My greeting server")
 @app.get("/api/greet")
