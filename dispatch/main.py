@@ -15,11 +15,16 @@ async def greet(name: Optional[str] = None):
 
 @app.post("/api/price")
 async def get_price(request: Request):
-    request = request.json()
+    print("A")
+    request = await request.json()
     product_url = request['product_url']
     profile = bot.Profile(request['profile'])
     b = picking.pick(product_url)
+    print("B")
+    b.start()
     result = b.run(product_url, profile)
+    b.stop()
+    print("C")
     return {
         'subtotal' : result.subtotal,
         'shipping' : result.shipping,
