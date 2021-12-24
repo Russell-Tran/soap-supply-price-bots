@@ -7,7 +7,6 @@ class NurtureSoap(Bot):
     def run(self, product_url, shopping_cart_url, p):
         d = self.driver
         d.get(product_url)
-        d.set_window_size(1843, 763) ## << EXPERIMENTAL!!
         time.sleep(3)
         d.find_element(By.CSS_SELECTOR, "button.product-form__add-button").click()
         time.sleep(3)
@@ -33,5 +32,3 @@ class NurtureSoap(Bot):
         result.shipping = d.find_element(By.CSS_SELECTOR, "tr.total-line:nth-child(2) > td:nth-child(2) > span:nth-child(1)").text
         result.total = d.find_element(By.CSS_SELECTOR, ".payment-due__price").text
         return result
-
-        
