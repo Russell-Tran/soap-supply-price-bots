@@ -9,6 +9,7 @@ pytest = "*"
 importlib-metadata = "*"
 
 [dev-packages]
+pytest-xdist = "*"
 
 [requires]
 python_version = "3.7"
