@@ -3,13 +3,13 @@
 * https://caddyserver.com/docs/install#debian-ubuntu-raspbian
 
 ```
-gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app
+gunicorn --timeout 600 -w 1 -k uvicorn.workers.UvicornWorker main:app
 ```
 
 and simultaneously,
 
 ```
-caddy reverse-proxy --from [Public IPv4 DNS HERE] --to localhost:8000
+caddy reverse-proxy --from [Public IPv4 DNS HERE has to be the EC2 domain not the raw ip] --to localhost:8000
 ```
 
 ## Notes

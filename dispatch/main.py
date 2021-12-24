@@ -3,6 +3,7 @@ import importlib # TEMPORARY DISGUSTING
 
 from typing import Optional
 from fastapi import Request, FastAPI
+from fastapi.responses import JSONResponse
 #from selenium_scripts import bot, picking
 from lib import bot, picking
 
@@ -20,13 +21,16 @@ async def get_price(request: Request):
     product_url = request['product_url']
     profile = bot.Profile(request['profile'])
     b = picking.pick(product_url)
+    print(f"we got {type(b)}")
+    if not b:
+        return {'error' : 'INVALID product_url'}
     print("B")
     b.start()
     result = b.run(product_url, profile)
     b.stop()
     print("C")
-    return {
+    return JSONResponse({
         'subtotal' : result.subtotal,
         'shipping' : result.shipping,
         'total' : result.total
-    }
+    })

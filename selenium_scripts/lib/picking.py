@@ -2,6 +2,7 @@ from .bot import Bot
 from .sites import *
 
 def pick(url: str) -> Bot:
+    print(f"the url received was {url}")
     url = url.lower()
     if "brambleberry.com" in url:
         return BrambleBerry()

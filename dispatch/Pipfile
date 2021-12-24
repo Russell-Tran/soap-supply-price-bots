@@ -17,3 +17,4 @@ python_version = "3.8"
 
 [packages.b6d4a4b]
 path = "./../selenium_scripts"
+editable = true
