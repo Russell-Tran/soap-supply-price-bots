@@ -1,5 +1,5 @@
 // REPLACE CONSTANTS HERE
-let fantastic_engine_url = 'https://webhook.site/e37c60c1-ac26-4c6c-b60f-35c8414f5cb1';
+let fantastic_engine_url = '';
 let fantastic_engine_apikey = '';
 
 // ==========
@@ -39,3 +39,5 @@ await table.updateRecordAsync(record_id, {
     "shipping" : output.shipping,
     "total" : output.total
 });
+
+
