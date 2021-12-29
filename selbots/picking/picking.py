@@ -1,5 +1,5 @@
-from .bot import Bot
-from .sites import *
+from ..bot import Bot
+from ..sites import *
 
 def pick(url: str) -> Bot:
     print(f"the url received was {url}")
