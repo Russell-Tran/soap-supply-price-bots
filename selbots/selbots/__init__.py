@@ -1,2 +1,3 @@
 __version__ = '0.1.0'
-taco = "LOL" # temporary
+import selbots.common
+import selbots.picking

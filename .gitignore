@@ -6,3 +6,7 @@ dispatch/__pycache__/
 sheetsman/config/service_account.json
 sheetsman/sheetsman/__pycache__
 sheetsman/tests/__pycache__
+selbots/selbots/common/__pycache__
+selbots/selbots/picking/__pycache__
+selbots/selbots/sites/__pycache__
+selbots/selbots/__pycache__

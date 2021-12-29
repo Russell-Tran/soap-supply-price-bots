@@ -1,7 +1,7 @@
 """
 Zap Sourcing 2021
 """
-from ..bot import *
+from selbots.common import *
 
 class NurtureSoap(Bot):
     def __init__(self):
