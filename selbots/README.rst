@@ -5,6 +5,7 @@ https://www.selenium.dev/selenium/docs/api/py/webdriver/selenium.webdriver.commo
 testing
 ============
 .. code-block:: shell
-poetry install
-brew install geckodriver
-poetry run pytest -v -n auto
+
+  poetry install
+  brew install geckodriver
+  poetry run pytest -v -n auto
