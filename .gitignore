@@ -3,3 +3,6 @@ geckodriver.log
 .DS_Store
 selenium_scripts/__pycache__
 dispatch/__pycache__/
+sheetsman/config/service_account.json
+sheetsman/sheetsman/__pycache__
+sheetsman/tests/__pycache__
