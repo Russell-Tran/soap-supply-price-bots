@@ -11,3 +11,6 @@ selbots/selbots/picking/__pycache__
 selbots/selbots/sites/__pycache__
 selbots/selbots/__pycache__
 selbots/tests/__pycache__
+selbots/tests/common/__pycache__/
+selbots/tests/picking/__pycache__
+selbots/tests/sites/__pycache__

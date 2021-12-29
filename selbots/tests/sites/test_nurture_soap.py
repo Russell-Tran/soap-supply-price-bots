@@ -1,6 +1,6 @@
 import pytest
 import json
-from .helper import *
+from tests.helper import *
 from selbots.sites import *
 
 @pytest.mark.parametrize(('profile_json', 'product_url'),[
