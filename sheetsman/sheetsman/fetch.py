@@ -9,7 +9,7 @@ def fulfill(sheetdocname):
     print("product_url values:")
     print(sheet.col_values(col_idx)[1:])
 
-def sanity(docname):
+def sanity(sheetdocname):
     gc = gspread.service_account(filename='config/service_account.json')
     sh = gc.open(sheetdocname)
     return sh.worksheet("sanity").get('A1')
