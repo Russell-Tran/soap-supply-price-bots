@@ -1,8 +1,7 @@
 import pytest
 import json
-from context import bot, sites
-from helper import *
-from sites import *
+from .helper import *
+from selbots.sites import *
 
 @pytest.mark.parametrize(('profile_json', 'product_url'),[
                          ('tests/example_profile.json', "https://nurturesoap.com/collections/perfect-in-soap-fragrance-oils/products/black-raspberry-vanilla-fragrance-oil"),
@@ -18,5 +17,5 @@ def test_nurture_soap(profile_json, product_url):
 def test_nurture_soap_advanced():
     result = generic_sim(NurtureSoap(), 'tests/example_profile.json', "https://nurturesoap.com/collections/perfect-in-soap-fragrance-oils/products/black-raspberry-vanilla-fragrance-oil")
     assert result.subtotal == "$4.00"
-    assert result.shipping == "$7.92"
-    assert result.total == "$11.92"
+    assert result.shipping == "$7.59"
+    assert result.total == "$11.86"

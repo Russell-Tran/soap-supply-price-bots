@@ -8,9 +8,6 @@ class NurtureSoap(Bot):
         super().__init__("https://nurturesoap.com/cart")
 
     def run(self, product_url: str, p: Profile):
-        print("Hi there! It's me, nurture soap!!!!!")
-
-
         d = self.driver
         shopping_cart_url = self.shopping_cart_url
         d.get(product_url)

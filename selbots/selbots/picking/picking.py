@@ -2,7 +2,6 @@ from selbots.common import Bot
 from selbots.sites import *
 
 def pick(url: str) -> Bot:
-    print(f"the url received was {url}")
     url = url.lower()
     if "brambleberry.com" in url:
         return BrambleBerry()

@@ -1,6 +1,5 @@
 import json
-from context import bot
-from bot import *
+from selbots.common import *
 
 def test_profile():
     with open('tests/example_profile.json') as file:
