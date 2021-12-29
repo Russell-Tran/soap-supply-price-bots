@@ -11,6 +11,7 @@ class NurtureSoap(Bot):
         d = self.driver
         shopping_cart_url = self.shopping_cart_url
         d.get(product_url)
+        
         time.sleep(2)
         d.find_element(By.CSS_SELECTOR, "button.product-form__add-button").click()
         time.sleep(2)
