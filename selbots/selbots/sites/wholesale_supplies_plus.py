@@ -1,8 +1,8 @@
 from selbots.common import *
 
 class WholesaleSuppliesPlus(Bot):
-    def __init__(self):
-        super().__init__(shopping_cart_url="https://www.wholesalesuppliesplus.com/securessl/checkout.aspx")
+    def __init__(self, headless=True):
+        super().__init__(shopping_cart_url="https://www.wholesalesuppliesplus.com/securessl/checkout.aspx", headless=headless)
 
     def run(self, product_url: str, p: Profile):
         d = self.driver
