@@ -51,12 +51,14 @@ class Result():
         self.total = None
 
 class Bot():
-    def __init__(self, shopping_cart_url):
+    def __init__(self, shopping_cart_url, headless=True):
         self.shopping_cart_url = shopping_cart_url
+        self.headless = headless
 
     def start(self):
         options = webdriver.FirefoxOptions()
-        options.add_argument("--headless") # https://stackoverflow.com/a/70125885/14775744
+        if self.headless:
+            options.add_argument("--headless") # https://stackoverflow.com/a/70125885/14775744
         self.driver = webdriver.Firefox(options=options)
         self.driver.set_window_size(1280, 949)
 
