@@ -4,8 +4,8 @@ Zap Sourcing 2021
 from selbots.common import *
 
 class ScentSationalSupply(Bot):
-    def __init__(self):
-        super().__init__(shopping_cart_url=None)
+    def __init__(self, headless=True):
+        super().__init__(shopping_cart_url=None, headless=headless)
 
     def run(self, product_url: str, p: Profile):
         d = self.driver
@@ -39,6 +39,8 @@ class ScentSationalSupply(Bot):
         result = Result()
         result.subtotal = d.find_element(By.CSS_SELECTOR, ".sidewidt > table:nth-child(5) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1)").text
         result.shipping = d.find_element(By.CSS_SELECTOR, ".sidewidt > table:nth-child(5) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(2) > span:nth-child(1)").text
+        result.fees = NO_PRICE
+        result.tax = NO_PRICE
         result.total = d.find_element(By.CSS_SELECTOR, ".sidewidt > table:nth-child(5) > tbody:nth-child(1) > tr:nth-child(3) > td:nth-child(2) > span:nth-child(1)").text
         return result
 

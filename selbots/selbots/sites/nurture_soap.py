@@ -4,8 +4,8 @@ Zap Sourcing 2021
 from selbots.common import *
 
 class NurtureSoap(Bot):
-    def __init__(self):
-        super().__init__("https://nurturesoap.com/cart")
+    def __init__(self, headless=True):
+        super().__init__(shopping_cart_url="https://nurturesoap.com/cart", headless=headless)
 
     def run(self, product_url: str, p: Profile):
         d = self.driver
@@ -30,10 +30,12 @@ class NurtureSoap(Bot):
         d.find_element(By.ID, "checkout_shipping_address_zip").send_keys(p.zipcode)
         d.find_element(By.ID, "checkout_shipping_address_phone").send_keys(p.phone)
         d.find_element(By.ID, "continue_button").click()
-        time.sleep(5)
+        time.sleep(7)
 
         result = Result()
         result.subtotal = d.find_element(By.CSS_SELECTOR, ".total-line--subtotal > td:nth-child(2) > span:nth-child(1)").text
         result.shipping = d.find_element(By.CSS_SELECTOR, "tr.total-line:nth-child(2) > td:nth-child(2) > span:nth-child(1)").text
+        result.tax = d.find_element(By.CSS_SELECTOR, "tr.total-line:nth-child(3) > td:nth-child(2) > span:nth-child(1)").text
+        result.fees = NO_PRICE
         result.total = d.find_element(By.CSS_SELECTOR, ".payment-due__price").text
         return result
