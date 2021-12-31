@@ -36,6 +36,6 @@ class NurtureSoap(Bot):
         result.subtotal = d.find_element(By.CSS_SELECTOR, ".total-line--subtotal > td:nth-child(2) > span:nth-child(1)").text
         result.shipping = d.find_element(By.CSS_SELECTOR, "tr.total-line:nth-child(2) > td:nth-child(2) > span:nth-child(1)").text
         result.tax = d.find_element(By.CSS_SELECTOR, "tr.total-line:nth-child(3) > td:nth-child(2) > span:nth-child(1)").text
-        result.fees = NO_PRICE
+        result.fees = FREE_PRICE
         result.total = d.find_element(By.CSS_SELECTOR, ".payment-due__price").text
         return result

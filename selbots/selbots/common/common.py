@@ -17,7 +17,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
-NO_PRICE = "$0.00"
+FREE_PRICE = "$0.00"
 
 class Profile():
     """
