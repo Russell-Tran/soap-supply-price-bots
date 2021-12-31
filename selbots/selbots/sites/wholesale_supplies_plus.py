@@ -16,9 +16,7 @@ class WholesaleSuppliesPlus(Bot):
 
         # Checkout
         d.get(shopping_cart_url)
-        # TODO: figure out the cookie situation for this one (goes straight to billing with cookies?)
-        # d.find_element(By.ID, "MainContent_btnCheckoutGuest").click()
-        
+
         # Fill out checkout details
         d.find_element(By.ID, "MainContent_txtBillFirstNameNew").click()
         d.find_element(By.ID, "MainContent_txtBillFirstNameNew").click()
@@ -41,11 +39,13 @@ class WholesaleSuppliesPlus(Bot):
         d.find_element(By.ID, "MainContent_txtBillPostalCodeNew").click()
         d.find_element(By.ID, "MainContent_txtBillPostalCodeNew").send_keys(p.zipcode)
         d.find_element(By.ID, "MainContent_txtBillEmailNew").click()
-        d.find_element(By.ID, "MainContent_txtBillEmailNew").click()
+        time.sleep(1)
         d.find_element(By.ID, "MainContent_txtBillEmailNew").send_keys(p.email)
+        time.sleep(1)
         d.find_element(By.ID, "MainContent_txtBillPhoneNew").click()
+        time.sleep(1)
         d.find_element(By.ID, "MainContent_txtBillPhoneNew").send_keys(p.phone)
-        d.find_element(By.CSS_SELECTOR, ".pt20").click()
+        time.sleep(1)
         d.find_element(By.ID, "MainContent_txtShipFirstNameNew").click()
         d.find_element(By.ID, "MainContent_txtShipFirstNameNew").send_keys(p.first_name)
         d.find_element(By.ID, "MainContent_txtShipLastNameNew").send_keys(p.last_name)
@@ -62,10 +62,13 @@ class WholesaleSuppliesPlus(Bot):
         d.find_element(By.ID, "MainContent_txtShipPostalCodeNew").click()
         d.find_element(By.ID, "MainContent_txtShipPostalCodeNew").send_keys(p.zipcode)
         d.find_element(By.ID, "MainContent_txtShipEmailNew").click()
-        d.find_element(By.ID, "MainContent_txtShipEmailNew").click()
+        time.sleep(1)
         d.find_element(By.ID, "MainContent_txtShipEmailNew").send_keys(p.email)
+        time.sleep(1)
         d.find_element(By.ID, "MainContent_txtShipPhoneNew").click()
+        time.sleep(1)
         d.find_element(By.ID, "MainContent_txtShipPhoneNew").send_keys(p.phone)
+        time.sleep(1)
         d.find_element(By.CSS_SELECTOR, ".co-forms:nth-child(1)").click()
         d.find_element(By.ID, "MainContent_btnUpdateBillingShippingNew").click()
         d.find_element(By.CSS_SELECTOR, "#MainContent_pnlSubmitOrder > div").click()
@@ -73,5 +76,8 @@ class WholesaleSuppliesPlus(Bot):
         
         result = Result()
         result.subtotal = d.find_element(By.ID, "MainContent_lblSubTotal").text
+        result.shipping = d.find_element(By.ID, "MainContent_lblShipCost").text
+        result.fees = d.find_element(By.ID, "MainContent_lblHandlingFee").text
+        result.tax = d.find_element(By.ID, "MainContent_lblTaxAmount").text
         result.total = d.find_element(By.ID, "MainContent_lblGrandTotal").text
         return result

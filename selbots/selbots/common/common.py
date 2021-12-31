@@ -47,6 +47,7 @@ class Result():
     def __init__(self):
         self.subtotal = None
         self.shipping = None
+        self.fees = None
         self.tax = None
         self.total = None
 

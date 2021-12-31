@@ -27,6 +27,7 @@ def generic_sim(b: common.Bot, profile_json: str, product_url: str) -> common.Re
 
 def print_result(result: common.Result):
     print("Subtotal: ", result.subtotal)
-    print("Tax: ", result.tax)
+    print("Fees:     ", result.fees)
+    print("Tax:      ", result.tax)
     print("Shipping: ", result.shipping)
-    print("Total: ", result.total)
+    print("Total:    ", result.total)

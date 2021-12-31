@@ -16,7 +16,7 @@ class NurtureSoap(Bot):
         d.find_element(By.CSS_SELECTOR, "button.product-form__add-button").click()
         time.sleep(2)
         d.get(shopping_cart_url)
-        time.sleep(2)
+        time.sleep(4)
         d.find_element(By.CSS_SELECTOR, ".cart-recap__checkout").click()
         d.find_element(By.ID, "checkout_email").send_keys(p.email)
         d.find_element(By.ID, "checkout_shipping_address_first_name").send_keys(p.first_name)
