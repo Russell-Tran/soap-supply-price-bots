@@ -32,7 +32,10 @@ def worker(datum):
         "country" : "United States",
         "zipcode" : "92673"
     })
-    result = generic_sim(bot, profile, product_url)
+    try:
+        result = generic_sim(bot, profile, product_url)
+    except:
+        return
     subtotal_col = columns['subtotal']
     fees_col = columns['fees']
     tax_col = columns['tax']
