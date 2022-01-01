@@ -7,6 +7,5 @@ from selbots.sites import *
 basic_profile = 'tests/example_profile.json'
 
 if __name__ == "__main__":
-    result = generic_sim(Brambleberry(headless=False), basic_profile, basic_url)
+    result = generic_sim(RusticEscentuals(headless=False), basic_profile, "https://www.rusticescentuals.com/products/White-Beeswax-Pastilles-16-ounces.aspx")
     print_result(result)
-    
