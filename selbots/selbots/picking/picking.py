@@ -4,7 +4,7 @@ from selbots.sites import *
 def pick(url: str) -> Bot:
     url = url.lower()
     if "brambleberry.com" in url:
-        return BrambleBerry()
+        return Brambleberry()
     elif "bulkapothecary.com" in url:
         return BulkApothecary()
     elif "bulknaturaloils.com" in url:
