@@ -48,10 +48,17 @@ class BulkApothecary(Bot):
         d.find_element(By.ID, "addressLine1Input").send_keys(p.address)
         d.find_element(By.ID, "companyInput").send_keys(p.company)
         d.find_element(By.ID, "phoneInput").send_keys(p.phone)
-        time.sleep(7)
+        time.sleep(10)
 
         d.find_element(By.CSS_SELECTOR, "li.form-checklist-item:nth-child(1) > div:nth-child(1) > div:nth-child(1) > label:nth-child(2)").click()
         time.sleep(5)
+
+        cheapest_option = d.find_element(By.CSS_SELECTOR, ".form-checklist-header--selected > div:nth-child(1) > label:nth-child(2) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1)").text
+        cheapest_option = cheapest_option.lower()
+        if "customer pickup" in cheapest_option:
+            # Don't do customer pickup; do mail order
+            d.find_element(By.CSS_SELECTOR, "li.form-checklist-item:nth-child(2) > div:nth-child(1) > div:nth-child(1) > label:nth-child(2)").click()
+            time.sleep(5)
 
         result = Result()
         result.subtotal = d.find_element(By.CSS_SELECTOR, ".cart-priceItem--subtotal > span:nth-child(2) > span:nth-child(1)").text

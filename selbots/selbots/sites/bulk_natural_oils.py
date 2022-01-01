@@ -14,7 +14,7 @@ class BulkNaturalOils(Bot):
         element = d.find_elements(By.ID, "selectqty")[0]
         Select(element).select_by_visible_text("1")
         d.find_element(By.ID, "product-addtocart-button").click()
-        time.sleep(7)
+        time.sleep(10)
         element = d.find_element(By.CSS_SELECTOR, "div.field:nth-child(4) > div:nth-child(2)").find_element(By.CLASS_NAME, "select")
         Select(element).select_by_visible_text(p.country)
         element = d.find_element(By.CSS_SELECTOR, "div.field:nth-child(5) > div:nth-child(2)").find_element(By.CLASS_NAME, "select")
@@ -22,7 +22,10 @@ class BulkNaturalOils(Bot):
         element = d.find_element(By.CSS_SELECTOR, "div.field:nth-child(7) > div:nth-child(2)").find_element(By.CLASS_NAME, "input-text")
         element.send_keys(p.zipcode)
         time.sleep(5)
-        d.find_element(By.ID, "s_method_fedexups_ups_03").click()
+        try:
+            d.find_element(By.ID, "s_method_fedexups_fedex_ground_home_delivery").click()
+        except:
+            d.find_element(By.ID, "s_method_fedexups_ups_03").click()
         time.sleep(5)
 
         result = Result()

@@ -19,7 +19,7 @@ class MountainRoseHerbs(Bot):
         d.find_element(By.CSS_SELECTOR, "div.cart-actions:nth-child(8) > a:nth-child(2)").click()
         d.find_element(By.ID, "email").send_keys(p.email)
         d.find_element(By.ID, "checkout-customer-continue").click()
-        time.sleep(1)
+        time.sleep(2)
         d.find_element(By.ID, "firstNameInput").send_keys(p.first_name)
         d.find_element(By.ID, "lastNameInput").send_keys(p.last_name)
         element = d.find_element(By.ID, "postCodeInput")
