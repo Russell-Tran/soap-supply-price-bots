@@ -11,6 +11,21 @@ from selbots.sites import *
 basic_profile = 'tests/example_profile.json'
 basic_penn_profile = 'tests/example_profile_penn.json'
 
+
+import pint.quantity
+from quantulum3 import parser as quantparser
+
+
 if __name__ == "__main__":
-    result = generic_sim(BulkNaturalOils(headless=False), basic_penn_profile, basic_url)
-    print_result(result)
+    # result = generic_sim(BulkNaturalOils(headless=False), basic_penn_profile, basic_url)
+    # print_result(result)
+
+    # quant_intermediate = quantparser.parse('I want 2 liters of wine')[0]
+    # quant = pint.quantity.Quantity(float(str(quant_intermediate.value)), str(quant_intermediate.unit)) # must cast val to float (https://github.com/hgrecco/pint/issues/538)
+    # print(quant)
+
+    ureg = pint.UnitRegistry()
+    #print(extract_quantity("$52.71 for 1 Block (10 lb)"))
+    #print((10 * ureg.lb).to_base_units())
+    extract_quantity("1 pound bag    ($32.75)   ") == (1 * ureg.lb).to_base_units()
+    print(extract_quantity("$10.28 for 1 lb") == (1 * ureg.lb).to_base_units())

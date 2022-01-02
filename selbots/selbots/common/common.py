@@ -17,6 +17,12 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
+# Used here and children
+from typing import List
+import pint.quantity
+import quantulum3.parser
+
+# Constant used when a particular website doesn't have a Result attribute (e.g. no fees)
 FREE_PRICE = "$0.00"
 
 """
@@ -36,6 +42,55 @@ def scroll_shim(passed_in_driver, object):
     passed_in_driver.execute_script(scroll_by_coord)
     passed_in_driver.execute_script(scroll_nav_out_of_way)
     return
+
+"""
+Heuristic that returns the first quantity whose unit isn't dollar or dimensionless (to filter those out)
+"""
+def _extract_quantity_helper_filter(quant_intermediates: List[quantulum3.classes.Quantity]) -> quantulum3.classes.Quantity:
+    for q in quant_intermediates:
+        unit = q.unit.name.lower()
+        if unit != 'dollar' and unit != 'dimensionless':
+            return q
+    return None
+
+"""
+Other heuristic to convert the unit names
+"""
+def _extract_quantity_helper_rename(unit: str) -> str:
+    if unit == 'pound-mass':
+        return 'pound'
+    if unit == 'pound sterling':
+        return 'pound'
+    return unit
+# def _extract_quantity_helper_rename(quant_intermediate: quantulum3.classes.Quantity) -> quantulum3.classes.Quantity:
+#     unit = quant_intermediate.unit.name.lower()
+#     new_name = unit
+#     if unit == 'pound-mass':
+#         new_name = 'pound'
+#     if unit == 'pound sterling':
+#         new_name = 'pound'
+#     quant_intermediate.unit.name = new_name
+#     return quant_intermediate
+
+"""
+Captures quantity from unstructured text rather intelligently
+Returns quantity in pint Quantity in base units
+
+(Internally uses the quantulum3 Quantity class and then converts it to pint Quantity class)
+"""
+def extract_quantity(text: str) -> pint.quantity.Quantity:
+    # Quantulum can parse
+    quant_intermediates = quantulum3.parser.parse(text)
+    if len(quant_intermediates) == 0:
+        return None
+    quant_intermediate = _extract_quantity_helper_filter(quant_intermediates)
+    if not quant_intermediate:
+        return None
+    # Pint can make the quantity manipulatable 
+    value = quant_intermediate.value
+    unit = _extract_quantity_helper_rename(quant_intermediate.unit.name)
+    quant_final = pint.quantity.Quantity(value, unit)
+    return quant_final.to_base_units()
 
 class Profile():
     """
@@ -89,4 +144,6 @@ class Bot():
 
     def run(self, product_url: str, p: Profile):
         raise Exception("run method not implemented for class {}".format(self.__class__.__name__))
+
+
         
