@@ -22,7 +22,7 @@ class Brambleberry(Bot):
         d.find_element(By.ID, "CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll").click()
         time.sleep(3)
 
-        d.find_element(By.LINK_TEXT, "5 lbs").click()
+        #d.find_element(By.LINK_TEXT, "5 lbs").click()
         time.sleep(1)
         d.find_element(By.ID, "add-to-cart").click()
         d.get(shopping_cart_url)

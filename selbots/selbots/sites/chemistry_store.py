@@ -25,7 +25,7 @@ class ChemistryStore(Bot):
         d.find_element(By.ID, "email").send_keys(p.email)
         time.sleep(3)
         element = d.find_element(By.CSS_SELECTOR, ".billing-address > ol:nth-child(2) > li:nth-child(1) > input:nth-child(2)")
-        element.send_keys(p['shipping_address']['first_name'])
+        element.send_keys(p.first_name)
         d.find_element(By.CSS_SELECTOR, ".billing-address > ol:nth-child(2) > li:nth-child(2) > input:nth-child(2)").send_keys(p.last_name)
         d.find_element(By.CSS_SELECTOR, ".billing-address > ol:nth-child(2) > li:nth-child(3) > input:nth-child(2)").send_keys(p.company)
         d.find_element(By.CSS_SELECTOR, ".billing-address > ol:nth-child(2) > li:nth-child(4) > input:nth-child(2)").send_keys(p.address)

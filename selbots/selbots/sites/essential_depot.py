@@ -57,13 +57,12 @@ class EssentialDepot(Bot):
         
         result = Result()
         d.find_element(By.CSS_SELECTOR, "input.bg-red").click() # "Continue to Shipping/Payment"
+        time.sleep(3)
         result.subtotal = d.find_element(By.CSS_SELECTOR, "strong.column:nth-child(2)").text
-        # Next page
-        d.find_element(By.CSS_SELECTOR, "input.button:nth-child(2)").click()
-        result.shipping = d.find_element(By.CSS_SELECTOR, "p.whole:nth-child(2) > span:nth-child(2)").text
-        # Next page again
         d.find_element(By.CSS_SELECTOR, "input.button:nth-child(2)").click() # "Continue to Payment Info"
+        time.sleep(3)
+        result.shipping = d.find_element(By.CSS_SELECTOR, "p.whole:nth-child(2) > span:nth-child(2)").text
         result.tax = d.find_element(By.CSS_SELECTOR, "p.whole:nth-child(3) > span:nth-child(2)").text
         result.fees = FREE_PRICE
-        result.total - d.find_element(By.CSS_SELECTOR, "p.column:nth-child(4) > strong:nth-child(2)").text
+        result.total = d.find_element(By.CSS_SELECTOR, "p.column:nth-child(4) > strong:nth-child(2)").text
         return result

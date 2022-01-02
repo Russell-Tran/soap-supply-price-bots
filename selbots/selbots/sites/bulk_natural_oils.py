@@ -13,7 +13,9 @@ class BulkNaturalOils(Bot):
 
         element = d.find_elements(By.ID, "selectqty")[0]
         Select(element).select_by_visible_text("1")
-        d.find_element(By.ID, "product-addtocart-button").click()
+        element = d.find_element(By.ID, "product-addtocart-button")
+        scroll_shim(d, element)
+        ActionChains(d).move_to_element(element).click().perform() # https://stackoverflow.com/a/49261182/14775744
         time.sleep(10)
         element = d.find_element(By.CSS_SELECTOR, "div.field:nth-child(4) > div:nth-child(2)").find_element(By.CLASS_NAME, "select")
         Select(element).select_by_visible_text(p.country)

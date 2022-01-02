@@ -19,6 +19,24 @@ from selenium.webdriver.common.by import By
 
 FREE_PRICE = "$0.00"
 
+"""
+Used for `selenium.common.exceptions.MoveTargetOutOfBoundsException: 
+Message: (765, 957) is out of bounds of viewport width (1280) and height (864)`
+
+Source: https://stackoverflow.com/a/52045231/14775744
+"""
+def scroll_shim(passed_in_driver, object):
+    x = object.location['x']
+    y = object.location['y']
+    scroll_by_coord = 'window.scrollTo(%s,%s);' % (
+        x,
+        y
+    )
+    scroll_nav_out_of_way = 'window.scrollBy(0, -120);'
+    passed_in_driver.execute_script(scroll_by_coord)
+    passed_in_driver.execute_script(scroll_nav_out_of_way)
+    return
+
 class Profile():
     """
     https://stackoverflow.com/a/6993694/14775744

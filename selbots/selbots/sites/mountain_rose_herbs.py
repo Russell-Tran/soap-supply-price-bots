@@ -33,7 +33,7 @@ class MountainRoseHerbs(Bot):
         Select(element).select_by_visible_text(p.state)
         d.find_element(By.ID, "addressLine1Input").send_keys(p.address)
         d.find_element(By.ID, "phoneInput").send_keys(p.phone)
-        time.sleep(10)
+        time.sleep(15) # Super long but seems like otherwise you get nondeterministic behavior, eg. can't find the tax element
         
         result = Result()
         result.subtotal = d.find_element(By.CSS_SELECTOR, ".product-price").text
