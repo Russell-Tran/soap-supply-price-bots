@@ -26,7 +26,7 @@ def test_extract_quantity():
     assert extract_quantity("1oz Jar    ($2.75) Out of Stock  ") == (1 * ureg.oz).to_base_units()
     assert extract_quantity("1 pound bag    ($32.75)   ") == (1 * ureg.lb).to_base_units()
     assert extract_quantity("$10.28 for 1 lb") == (1 * ureg.lb).to_base_units()
-    assert extract_quantity("1 fl. oz") == (10 * ureg.floz).to_base_units()
+    assert extract_quantity("1 fl. oz") == (1 * ureg.floz).to_base_units()
     assert extract_quantity("1 lb") == (1 * ureg.lb).to_base_units()
     assert extract_quantity("Bees Wax Pastilles Pearls - Yellow - 8 lbs") == (8 * ureg.lb).to_base_units()
     assert extract_quantity("1 oz.") == (1 * ureg.oz).to_base_units()

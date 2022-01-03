@@ -49,28 +49,23 @@ Heuristic that returns the first quantity whose unit isn't dollar or dimensionle
 def _extract_quantity_helper_filter(quant_intermediates: List[quantulum3.classes.Quantity]) -> quantulum3.classes.Quantity:
     for q in quant_intermediates:
         unit = q.unit.name.lower()
-        if unit != 'dollar' and unit != 'dimensionless':
+        if (unit != 'dollar' 
+            and unit != 'dimensionless' 
+            and unit != 'percentage'):
             return q
     return None
 
 """
-Other heuristic to convert the unit names
+Other heuristic to convert some of the unit names
 """
 def _extract_quantity_helper_rename(unit: str) -> str:
     if unit == 'pound-mass':
         return 'pound'
     if unit == 'pound sterling':
         return 'pound'
+    if unit == 'fluid ounce':
+        return 'floz'
     return unit
-# def _extract_quantity_helper_rename(quant_intermediate: quantulum3.classes.Quantity) -> quantulum3.classes.Quantity:
-#     unit = quant_intermediate.unit.name.lower()
-#     new_name = unit
-#     if unit == 'pound-mass':
-#         new_name = 'pound'
-#     if unit == 'pound sterling':
-#         new_name = 'pound'
-#     quant_intermediate.unit.name = new_name
-#     return quant_intermediate
 
 """
 Captures quantity from unstructured text rather intelligently
@@ -86,10 +81,11 @@ def extract_quantity(text: str) -> pint.quantity.Quantity:
     quant_intermediate = _extract_quantity_helper_filter(quant_intermediates)
     if not quant_intermediate:
         return None
+
     # Pint can make the quantity manipulatable 
     value = quant_intermediate.value
-    unit = _extract_quantity_helper_rename(quant_intermediate.unit.name)
-    quant_final = pint.quantity.Quantity(value, unit)
+    unit_name = _extract_quantity_helper_rename(quant_intermediate.unit.name)
+    quant_final = pint.quantity.Quantity(value, unit_name)
     return quant_final.to_base_units()
 
 class Profile():

@@ -3,7 +3,7 @@ from tests.helper import *
 #from tests.sites.test_scent_sational_supply import basic_url
 # from tests.sites.test_nurture_soap import basic_url
 #from tests.sites.test_brambleberry import basic_url
-from tests.sites.test_bulk_natural_oils import basic_url
+# from tests.sites.test_bulk_natural_oils import basic_url
 #from tests.sites.test_bulk_apothecary import basic_url
 #from tests.sites.test_mountain_rose_herbs import basic_url
 #from tests.sites.test_essential_depot import basic_url
@@ -27,5 +27,6 @@ if __name__ == "__main__":
     ureg = pint.UnitRegistry()
     #print(extract_quantity("$52.71 for 1 Block (10 lb)"))
     #print((10 * ureg.lb).to_base_units())
-    extract_quantity("1 pound bag    ($32.75)   ") == (1 * ureg.lb).to_base_units()
-    print(extract_quantity("$10.28 for 1 lb") == (1 * ureg.lb).to_base_units())
+    #extract_quantity("1 pound bag    ($32.75)   ") == (1 * ureg.lb).to_base_units()
+    #print(extract_quantity("$10.28 for 1 lb") == (1 * ureg.lb).to_base_units())
+    extract_quantity("1 fl. oz") == (10 * ureg.floz).to_base_units()
