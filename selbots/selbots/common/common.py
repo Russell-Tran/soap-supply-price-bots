@@ -88,6 +88,14 @@ def extract_quantity(text: str) -> pint.quantity.Quantity:
     quant_final = pint.quantity.Quantity(value, unit_name)
     return quant_final.to_base_units()
 
+"""
+Given a list of Quantities and a target Quantity,
+returns the index of the element with the shortest distance
+"""
+def shortest_dist_idx(choices: List[pint.quantity.Quantity], target: pint.quantity.Quantity) -> int:
+    _, idx = min([(abs(target - q), i) for i, q in enumerate(choices)])
+    return idx
+
 class Profile():
     """
     https://stackoverflow.com/a/6993694/14775744

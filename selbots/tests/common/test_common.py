@@ -37,5 +37,82 @@ def test_extract_quantity():
     assert extract_quantity("1 lb Yellow - $9.36") == (1 * ureg.lb).to_base_units()
     assert extract_quantity(r"Orders over $250 take an additional 15% off using coupon code 15off250") == None
     
-    
-    #print(2.0 * ureg.liter )
+def test_shortest_dist_idx():
+    target = pint.quantity.Quantity(5.0, "oz")
+    choices = [
+        pint.quantity.Quantity(8.0, "oz"),
+        pint.quantity.Quantity(3.0, "oz"),
+        pint.quantity.Quantity(2.0, "oz"),
+        pint.quantity.Quantity(10.0, "oz"),
+        pint.quantity.Quantity(25.0, "oz"),
+        pint.quantity.Quantity(550.0, "oz")
+    ]
+    assert shortest_dist_idx(choices, target) == 1
+
+    target = pint.quantity.Quantity(8.5, "oz")
+    choices = [
+        pint.quantity.Quantity(8.0, "oz"),
+        pint.quantity.Quantity(3.0, "oz"),
+        pint.quantity.Quantity(2.0, "oz"),
+        pint.quantity.Quantity(10.0, "oz"),
+        pint.quantity.Quantity(25.0, "oz"),
+        pint.quantity.Quantity(550.0, "oz")
+    ]
+    assert shortest_dist_idx(choices, target) == 0
+
+    target = pint.quantity.Quantity(60000, "oz")
+    choices = [
+        pint.quantity.Quantity(8.0, "oz"),
+        pint.quantity.Quantity(3.0, "oz"),
+        pint.quantity.Quantity(2.0, "oz"),
+        pint.quantity.Quantity(10.0, "oz"),
+        pint.quantity.Quantity(25.0, "oz"),
+        pint.quantity.Quantity(550.0, "oz")
+    ]
+    assert shortest_dist_idx(choices, target) == 5
+
+def test_shortest_dist_idx_different_unit():
+    target = pint.quantity.Quantity(1, "lb")
+    choices = [
+        pint.quantity.Quantity(8.0, "oz"),
+        pint.quantity.Quantity(3.0, "oz"),
+        pint.quantity.Quantity(2.0, "oz"),
+        pint.quantity.Quantity(10.0, "oz"),
+        pint.quantity.Quantity(25.0, "oz"),
+        pint.quantity.Quantity(550.0, "oz"),
+        pint.quantity.Quantity(16.2, "oz"),
+        pint.quantity.Quantity(10.0, "oz")
+    ]
+    assert shortest_dist_idx(choices, target) == 6
+
+    target = pint.quantity.Quantity(141.748, "g")
+    choices = [
+        pint.quantity.Quantity(8.0, "oz"),
+        pint.quantity.Quantity(3.0, "oz"),
+        pint.quantity.Quantity(2.0, "oz"),
+         pint.quantity.Quantity(5.0, "oz"),
+        pint.quantity.Quantity(10.0, "oz"),
+        pint.quantity.Quantity(25.0, "oz"),
+        pint.quantity.Quantity(550.0, "oz"),
+        pint.quantity.Quantity(16.2, "oz"),
+        pint.quantity.Quantity(10.0, "oz")
+    ]
+    assert shortest_dist_idx(choices, target) == 3
+
+    target = pint.quantity.Quantity(10, "floz")
+    choices = [
+        pint.quantity.Quantity(100, "mL"),
+        pint.quantity.Quantity(200, "mL"),
+        pint.quantity.Quantity(300, "mL"),
+        pint.quantity.Quantity(400, "mL"),
+    ]
+    assert shortest_dist_idx(choices, target) == 2
+
+    target = pint.quantity.Quantity(10, "floz")
+    choices = [
+        pint.quantity.Quantity(100, "L"),
+        pint.quantity.Quantity(200, "L"),
+        pint.quantity.Quantity(300, "L"),
+        pint.quantity.Quantity(400, "L"),
+    ]
+    assert shortest_dist_idx(choices, target) == 0
