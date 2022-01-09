@@ -118,8 +118,9 @@ class Menu():
         if len(candidate_elements) != len(qty_texts):
             raise Exception("length of parameter candidate_elements did not match length of parameter qty_texts")
         self.candidate_elements = candidate_elements
-        self.quantities = [extract_quantity(qty_text) for qty_text in qty_texts]
         self.quantities_pretty = [extract_quantity_nonbase(qty_text) for qty_text in qty_texts] # FOR COSMETIC ONLY, NOT CALC
+        self.quantities = [q.to_base_units() if q else None for q in self.quantities_pretty] # USABLE FOR CALC
+       
 
     def choose_element(self, target: pint.quantity.Quantity) -> (WebElement, pint.quantity.Quantity):
         idx = shortest_dist_idx(self.quantities, target)
