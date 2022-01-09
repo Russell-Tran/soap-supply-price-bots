@@ -3,7 +3,7 @@ import json
 from tests.helper import *
 from selbots.sites import *
 
-basic_url = "https://www.chemistrystore.com/Cosmetic_Waxes-Natural_Yellow_Beeswax.html"
+basic_url = "https://www.chemistrystore.com/Deodorant_Bottles-90ml_Rol-On_Deodorant_Bottles_1.html"
 
 @pytest.mark.parametrize(('profile_json', 'product_url'),[
                          ('tests/example_profile.json', basic_url),
