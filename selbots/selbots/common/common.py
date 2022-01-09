@@ -16,6 +16,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
 
 # Used here and children
 from typing import List
@@ -69,7 +70,7 @@ def _extract_quantity_helper_rename(unit: str) -> str:
 
 """
 Captures quantity from unstructured text rather intelligently
-Returns quantity in pint Quantity in base units
+Returns quantity in pint Quantity in base units, None if not found
 
 (Internally uses the quantulum3 Quantity class and then converts it to pint Quantity class)
 """
@@ -91,10 +92,29 @@ def extract_quantity(text: str) -> pint.quantity.Quantity:
 """
 Given a list of Quantities and a target Quantity,
 returns the index of the element with the shortest distance
+
+(Ok if list contains some None elements)
 """
 def shortest_dist_idx(choices: List[pint.quantity.Quantity], target: pint.quantity.Quantity) -> int:
-    _, idx = min([(abs(target - q), i) for i, q in enumerate(choices)])
+    _, idx = min([(abs(target - q), i) for i, q in enumerate(choices) if q is not None])
     return idx
+
+class Menu():
+    """ 
+    `candidate_elements` is a list of webelements which represent potential outcomes to a choice
+    `qty_texts` is a list of unstructured texts which each correspond to the candidate_elements by index
+
+    `candidate_elements` and `qty_texts` must be the same length
+    """
+    def __init__(self, candidate_elements: List[WebElement], qty_texts: List[str]):
+        if len(candidate_elements) != len(qty_texts):
+            raise Exception("length of parameter candidate_elements did not match length of parameter qty_texts")
+        self.candidate_elements = candidate_elements
+        self.quantities = [extract_quantity(qty_text) for qty_text in qty_texts]
+
+    def choose_element(self, target: pint.quantity.Quantity) -> WebElement:
+        idx = shortest_dist_idx(self.quantities, target)
+        return self.candidate_elements[idx]
 
 class Profile():
     """

@@ -116,3 +116,61 @@ def test_shortest_dist_idx_different_unit():
         pint.quantity.Quantity(400, "L"),
     ]
     assert shortest_dist_idx(choices, target) == 0
+
+def test_shortest_dist_idx_has_none():
+    target = pint.quantity.Quantity(5.0, "oz")
+    choices = [
+        pint.quantity.Quantity(8.0, "oz"),
+        pint.quantity.Quantity(3.0, "oz"),
+        pint.quantity.Quantity(2.0, "oz"),
+        pint.quantity.Quantity(10.0, "oz"),
+        None,
+        pint.quantity.Quantity(550.0, "oz")
+    ]
+    assert shortest_dist_idx(choices, target) == 1
+
+    target = pint.quantity.Quantity(8.5, "oz")
+    choices = [
+        pint.quantity.Quantity(8.0, "oz"),
+        pint.quantity.Quantity(3.0, "oz"),
+        pint.quantity.Quantity(2.0, "oz"),
+        pint.quantity.Quantity(10.0, "oz"),
+        pint.quantity.Quantity(25.0, "oz"),
+        None,
+        None,
+        pint.quantity.Quantity(550.0, "oz"),
+        None
+    ]
+    assert shortest_dist_idx(choices, target) == 0
+
+def test_menu():
+    c = [
+        WebElement("junk", "alpha"),
+        WebElement("junk", "beta"),
+        WebElement("junk", "gamma"),
+        WebElement("junk", "delta"),
+        WebElement("junk", "epsilon"),
+    ]
+    qty_texts = ['', '1 lb', '5 lbs', '25 lbs', '55 lbs']
+    m = Menu(c, qty_texts)
+    assert m.choose_element(pint.quantity.Quantity(1.0, "lb")) == c[1]
+    assert m.choose_element(pint.quantity.Quantity(5.0, "lb")) == c[2]
+    assert m.choose_element(pint.quantity.Quantity(25.0, "lb")) == c[3]
+    assert m.choose_element(pint.quantity.Quantity(55.0, "lb")) == c[4]
+    assert m.choose_element(pint.quantity.Quantity(16, "oz")) == c[1]
+    assert m.choose_element(pint.quantity.Quantity(100, "lb")) == c[4]
+
+    assert m.choose_element(pint.quantity.Quantity(1.5, "lb")) == c[1]
+    assert m.choose_element(pint.quantity.Quantity(5.5, "lb")) == c[2]
+    assert m.choose_element(pint.quantity.Quantity(25.5, "lb")) == c[3]
+    assert m.choose_element(pint.quantity.Quantity(55.5, "lb")) == c[4]
+    assert m.choose_element(pint.quantity.Quantity(16.5, "oz")) == c[1]
+    assert m.choose_element(pint.quantity.Quantity(100.5, "lb")) == c[4]
+
+    assert m.choose_element(pint.quantity.Quantity(0.5, "lb")) == c[1]
+    assert m.choose_element(pint.quantity.Quantity(4.5, "lb")) == c[2]
+    assert m.choose_element(pint.quantity.Quantity(24.5, "lb")) == c[3]
+    assert m.choose_element(pint.quantity.Quantity(54.5, "lb")) == c[4]
+    assert m.choose_element(pint.quantity.Quantity(15.5, "oz")) == c[1]
+    assert m.choose_element(pint.quantity.Quantity(99.5, "lb")) == c[4]
+    
