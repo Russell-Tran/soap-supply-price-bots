@@ -4,16 +4,27 @@ class WholesaleSuppliesPlus(Bot):
     def __init__(self, headless=True):
         super().__init__(shopping_cart_url="https://www.wholesalesuppliesplus.com/securessl/checkout.aspx", headless=headless)
 
-    def run(self, product_url: str, p: Profile):
+    def _generate_menu(self) -> Menu:
+        d = self.driver
+        element = d.find_element(By.CSS_SELECTOR, "#Buy > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(1)")
+        choices = element.find_elements(By.TAG_NAME, 'input')
+        choice_texts = element.text.split('\n')
+        return Menu(choices, choice_texts)
+
+    def run(self, product_url: str, p: Profile, target_qty: pint.quantity.Quantity = None):
         d = self.driver
         shopping_cart_url = self.shopping_cart_url
         d.get(product_url)
 
-        choices = d.find_elements(By.ID, "ProductPriceIDText")
-        product = choices[2] # The third element is the 5lb option
-        product.click()
-        d.find_element(By.ID, "MainContent_ChildContent_ParentData_btnAddToCart_0").click()
+        # Menu logic
+        menu = self._generate_menu()
+        if target_qty:
+            element, chosen_qty = menu.choose_element(target_qty)
+        else:
+            element, chosen_qty = menu.first_viable_element()
+        ActionChains(d).move_to_element(element).click().perform()
 
+        d.find_element(By.ID, "MainContent_ChildContent_ParentData_btnAddToCart_0").click()
         # Checkout
         d.get(shopping_cart_url)
 
@@ -75,6 +86,7 @@ class WholesaleSuppliesPlus(Bot):
         d.find_element(By.CSS_SELECTOR, "#MainContent_pnlSubmitOrder > div").click()
         
         result = Result()
+        result.size = chosen_qty
         result.subtotal = d.find_element(By.ID, "MainContent_lblSubTotal").text
         result.shipping = d.find_element(By.ID, "MainContent_lblShipCost").text
         result.fees = d.find_element(By.ID, "MainContent_lblHandlingFee").text

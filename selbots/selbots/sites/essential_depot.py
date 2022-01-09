@@ -7,11 +7,14 @@ class EssentialDepot(Bot):
     def __init__(self, headless=True):
         super().__init__(shopping_cart_url=None, headless=headless)
 
-    def run(self, product_url: str, p: Profile):
+    def run(self, product_url: str, p: Profile, target_qty: pint.quantity.Quantity = None):
         d = self.driver
         shopping_cart_url = self.shopping_cart_url
         d.get(product_url)
-        
+
+        # For this website, each quantity has its own page, so no need for a menu
+        chosen_qty = extract_quantity_nonbase(d.find_element(By.CSS_SELECTOR, "h1.column").text)
+
         d.find_element(By.ID, "js-add-to-cart").click()
         d.find_element(By.ID, "js-mini-basket").click()
 
@@ -55,10 +58,13 @@ class EssentialDepot(Bot):
         element = d.find_element(By.ID, "BillCountry")
         Select(element).select_by_visible_text(p.country)
         
-        result = Result()
         d.find_element(By.CSS_SELECTOR, "input.bg-red").click() # "Continue to Shipping/Payment"
         time.sleep(3)
+
+        result = Result()
+        result.size = chosen_qty
         result.subtotal = d.find_element(By.CSS_SELECTOR, "strong.column:nth-child(2)").text
+
         d.find_element(By.CSS_SELECTOR, "input.button:nth-child(2)").click() # "Continue to Payment Info"
         time.sleep(3)
         result.shipping = d.find_element(By.CSS_SELECTOR, "p.whole:nth-child(2) > span:nth-child(2)").text

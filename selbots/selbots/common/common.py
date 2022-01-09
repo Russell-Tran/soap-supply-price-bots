@@ -104,7 +104,24 @@ returns the index of the element with the shortest distance
 (Ok if list contains some None elements)
 """
 def shortest_dist_idx(choices: List[pint.quantity.Quantity], target: pint.quantity.Quantity) -> int:
-    _, idx = min([(abs(target - q), i) for i, q in enumerate(choices) if q is not None])
+    try:
+        _, idx = min([(abs(target - q), i) for i, q in enumerate(choices) if q is not None])
+    except pint.errors.DimensionalityError:
+        # TODO: UNIT TEST THIS AND ALSO MAKE IT MORE ROBUST / LOGICAL
+        # TODO: Do vice versa for target as well (make all the things adhere to the target)
+        # We had a stupid edge case where a menu used all of floz, oz, and lb
+        # And so have to patch this dimensionality disagreement between volume and weight
+        # https://nurturesoap.com/collections/perfect-in-soap-fragrance-oils/products/black-raspberry-vanilla-fragrance-oil?variant=21140006895693
+        # TODO: One way to implement this would be to convert floz to oz based on weight of water, and some
+        # similar batching for all things like this. For now we are just going to ignore the choice of floz
+        refined_choices = []
+        for i, q in enumerate(choices):
+            try:
+                difference = abs(target - q)
+                refined_choices.append((difference, i))
+            except:
+                continue
+        _, idx = min(refined_choices)
     return idx
 
 class Menu():
