@@ -16,9 +16,10 @@ class ChemistryStore(Bot):
         choice_texts = []
         for c in choice_parents:
             try:
-                choice = c.find_element(By.XPATH, "//*[contains(text(), '+')]")
+                #choice = c.find_element(By.XPATH, "//*[contains(text(), '+')]")
+                #choice = c.find_element(By.CSS_SELECTOR, "div.mt10:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(3)")
                 choice_text = c.find_element(By.CLASS_NAME, "optlinks").text
-                choices.append(choice)
+                #choices.append(choice)
                 choice_texts.append(choice_text)
             except Exception as e:
                 print (e)
@@ -26,6 +27,9 @@ class ChemistryStore(Bot):
         print(choice_parents)
         print(choices)
         print(choice_texts)
+
+        choices = choice_parents
+
         return Menu(choices, choice_texts)
 
     def run(self, product_url: str, p: Profile, target_qty: pint.quantity.Quantity = None):
@@ -44,8 +48,21 @@ class ChemistryStore(Bot):
             element, chosen_qty = menu.first_viable_element()
         #random_element_to_use_for_scrolling = d.find_element(By.CSS_SELECTOR, ".option-title")
         #d.execute_script('arguments[0].scrollIntoView();', random_element_to_use_for_scrolling)
-        element.click()
         
+        print(f'chosen qty {chosen_qty}')
+        print(f'available quantities {menu.quantities_pretty}')
+        #scroll_shim(d, element)
+        #time.sleep(3)
+        #ActionChains(d).move_to_element(element).click().perform()
+        #d.execute_script('arguments[0].scrollIntoView();', element)
+        #lement = element.find_element(By.XPATH, "//*[contains(text(), '+')]")
+        #ActionChains(d).move_to_element(element).click().perform()
+        #element.click()
+        #d.find_element(By.CSS_SELECTOR, "div.mt10:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(3)").click()
+        
+        element.find_element(By.CSS_SELECTOR, ".input-group-addon.plus-option.noselect").click()
+
+
         d.find_element(By.ID, "submit-product-w-options").click()
         time.sleep(5)
 
