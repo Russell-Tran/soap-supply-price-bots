@@ -36,11 +36,14 @@ def worker(datum):
         result = generic_sim(bot, profile, product_url)
     except:
         return
+    size_col = columns['size']
     subtotal_col = columns['subtotal']
     fees_col = columns['fees']
     tax_col = columns['tax']
     shipping_col = columns['shipping']
     total_col = columns['total']
+
+    sheet.update(CONVERT[size_col] + str(row), str(result.size))
     sheet.update(CONVERT[subtotal_col] + str(row), result.subtotal)
     sheet.update(CONVERT[fees_col] + str(row), result.fees)
     sheet.update(CONVERT[tax_col] + str(row), result.tax)
@@ -56,12 +59,14 @@ def fulfill(sheetdocname):
     column_header = sheet.row_values(1)
 
     product_url_col = column_header.index("product_url") + 1
-    subtotal_col = product_url_col + 1
+    size_col = product_url_col + 1
+    subtotal_col = size_col + 1
     fees_col = subtotal_col + 1
     tax_col = fees_col + 1
     shipping_col = tax_col + 1
     total_col = shipping_col + 1
 
+    sheet.update(CONVERT[size_col] + "1", "size")
     sheet.update(CONVERT[subtotal_col] + "1", "subtotal")
     sheet.update(CONVERT[fees_col] + "1", "fees")
     sheet.update(CONVERT[tax_col] + "1", "tax")
@@ -71,6 +76,7 @@ def fulfill(sheetdocname):
 
 
     columns = {
+        'size' : size_col,
         'subtotal' : subtotal_col,
         'fees' : fees_col,
         'tax' : tax_col,
