@@ -121,10 +121,14 @@ class Menu():
         self.quantities_pretty = [extract_quantity_nonbase(qty_text) for qty_text in qty_texts] # FOR COSMETIC ONLY, NOT CALC
         self.quantities = [q.to_base_units() if q else None for q in self.quantities_pretty] # USABLE FOR CALC
        
-
     def choose_element(self, target: pint.quantity.Quantity) -> (WebElement, pint.quantity.Quantity):
         idx = shortest_dist_idx(self.quantities, target)
         return (self.candidate_elements[idx], self.quantities_pretty[idx])
+
+    def first_viable_element(self) -> (WebElement, pint.quantity.Quantity):
+        for element, qty in zip(self.candidate_elements, self.quantities_pretty):
+            if qty is not None:
+                return (element, qty)
 
 class Profile():
     """
@@ -177,7 +181,7 @@ class Bot(ABC):
         self.driver.stop_client() # This needs to be added in order to close the window
         self.driver.quit()
 
-    #@abstractmethod
+    @abstractmethod
     def run(self, product_url: str, p: Profile, target_qty: pint.quantity.Quantity):
         raise Exception("run method not implemented for class {}".format(self.__class__.__name__))
 

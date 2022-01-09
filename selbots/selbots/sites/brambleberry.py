@@ -21,7 +21,7 @@ class Brambleberry(Bot):
         choice_texts = [c.text for c in choices_deeper]
         return Menu(choices_deeper, choice_texts)
 
-    def run(self, product_url: str, p: Profile, target_qty: pint.quantity.Quantity = pint.quantity.Quantity(26, "lb")):
+    def run(self, product_url: str, p: Profile, target_qty: pint.quantity.Quantity = None):
         d = self.driver
         shopping_cart_url = self.shopping_cart_url
         d.get(product_url)
@@ -38,7 +38,10 @@ class Brambleberry(Bot):
 
         # Menu logic
         menu = self._generate_menu()
-        element, chosen_qty = menu.choose_element(target_qty)
+        if target_qty:
+            element, chosen_qty = menu.choose_element(target_qty)
+        else:
+            element, chosen_qty = menu.first_viable_element()
         element.click()
 
         time.sleep(1)
