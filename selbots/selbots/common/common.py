@@ -188,9 +188,6 @@ class Bot(ABC):
     """ Assumes you've already got the page open and everything. (Assumes you're inside the run method).
     Just some space to write logic to scrape the menu and ingest in as a Menu object.
     """
-    #@abstractmethod
     def _generate_menu(self) -> Menu:
         raise Exception("generate_menu method not implemented for class {}".format(self.__class__.__name__))
-
-
         

@@ -69,31 +69,4 @@ class Brambleberry(Bot):
         result.tax = d.find_element(By.CSS_SELECTOR, ".order-sales-tax > td:nth-child(2)").text
         result.total = d.find_element(By.CSS_SELECTOR, ".order-value").text
         return result
-
-    def _dev(self, product_url: str, p: Profile):
-        d = self.driver
-        shopping_cart_url = self.shopping_cart_url
-        d.get(product_url)
-
-        # https://stackoverflow.com/a/37303115/14775744
-        timeout = 5
-        element_present = EC.presence_of_element_located((By.ID, "CybotCookiebotDialogBodyUnderlay"))
-        WebDriverWait(d, timeout).until(element_present)
-
-        # Cookie
-        time.sleep(3)
-        d.find_element(By.ID, "CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll").click()
-        time.sleep(3)
-
-        element = d.find_element(By.CSS_SELECTOR, ".swatches")
-        choices = element.find_elements(By.CLASS_NAME, "selectable")
-        choices_deeper = []
-        for choice in choices:
-            try:
-                choices_deeper.append(choice.find_element(By.TAG_NAME, 'a'))
-            except:
-                continue
-        choice_texts = [c.text for c in choices_deeper]
         
-        print(choice_texts)
-        choices_deeper[3].click()

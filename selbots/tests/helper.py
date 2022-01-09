@@ -1,6 +1,7 @@
 import re
 import json
 import selbots.common as common
+import pint
 
 def exactly_one_price(s: str) -> bool:
     if not s:
@@ -20,6 +21,24 @@ def generic_sim(b: common.Bot, profile_json: str, product_url: str) -> common.Re
         b.start()
         try:
             result = b.run(product_url, profile)
+        except Exception as e:
+            if b.headless:
+                b.stop()
+            raise e
+        if b.headless:
+            b.stop()
+        return result
+
+# Upgrade for considering target qty
+def generic_sim_qty(b: common.Bot, profile_json: str, product_url: str, 
+    target_qty: str) -> common.Result:
+    
+    target_qty = common.extract_quantity(target_qty)
+    with open(profile_json) as file:
+        profile = common.Profile(json.load(file))
+        b.start()
+        try:
+            result = b.run(product_url, profile, target_qty)
         except Exception as e:
             if b.headless:
                 b.stop()

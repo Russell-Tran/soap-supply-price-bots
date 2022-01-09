@@ -7,7 +7,14 @@ class BulkApothecary(Bot):
     def __init__(self, headless=True):
         super().__init__(shopping_cart_url="https://www.bulkapothecary.com/checkout", headless=headless)
 
-    def run(self, product_url: str, p: Profile):
+    def _generate_menu(self) -> Menu:
+        d = self.driver
+        element = d.find_element(By.CSS_SELECTOR, ".productView-options > form:nth-child(1) > div:nth-child(3) > div:nth-child(1)")
+        choices = element.find_elements(By.TAG_NAME, 'label')
+        choice_texts = [c.text for c in choices]
+        return Menu(choices, choice_texts)
+
+    def run(self, product_url: str, p: Profile, target_qty: pint.quantity.Quantity = None):
         d = self.driver
         d.get(product_url)
         
@@ -18,8 +25,18 @@ class BulkApothecary(Bot):
             # There way no popup
             pass
             
-        d.find_element(By.CSS_SELECTOR, "label.form-label:nth-child(9)").click()
-        d.find_element(By.ID, "form-action-addToCart").click()
+        # Menu logic
+        menu = self._generate_menu()
+        if target_qty:
+            element, chosen_qty = menu.choose_element(target_qty)
+        else:
+            element, chosen_qty = menu.first_viable_element()
+        element.click()
+
+        element = d.find_element(By.ID, "form-action-addToCart")
+        # https://stackoverflow.com/a/67414801/14775744
+        d.execute_script('arguments[0].scrollIntoView();', element)
+        element.click()
         time.sleep(1)
         d.get(self.shopping_cart_url)
         time.sleep(0.5)
@@ -61,6 +78,7 @@ class BulkApothecary(Bot):
             time.sleep(5)
 
         result = Result()
+        result.size = chosen_qty
         result.subtotal = d.find_element(By.CSS_SELECTOR, ".cart-priceItem--subtotal > span:nth-child(2) > span:nth-child(1)").text
         result.shipping = d.find_element(By.CSS_SELECTOR, "section.cart-section:nth-child(3) > div:nth-child(2) > div:nth-child(1) > span:nth-child(2) > span:nth-child(1)").text
         result.tax = d.find_element(By.CSS_SELECTOR, "section.cart-section:nth-child(3) > div:nth-child(3) > div:nth-child(1) > span:nth-child(2) > span:nth-child(1)").text
