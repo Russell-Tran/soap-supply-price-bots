@@ -38,7 +38,7 @@ class Brambleberry(Bot):
 
         # Menu logic
         menu = self._generate_menu()
-        element = menu.choose_element(target_qty)
+        element, chosen_qty = menu.choose_element(target_qty)
         element.click()
 
         time.sleep(1)
@@ -59,6 +59,7 @@ class Brambleberry(Bot):
         time.sleep(2)
 
         result = Result()
+        result.size = chosen_qty
         result.subtotal = d.find_element(By.CSS_SELECTOR, ".order-subitems > td:nth-child(2)").text
         result.fees = FREE_PRICE
         result.shipping = d.find_element(By.CSS_SELECTOR, ".order-shipping > .align-right").text

@@ -29,6 +29,7 @@ def generic_sim(b: common.Bot, profile_json: str, product_url: str) -> common.Re
         return result
 
 def print_result(result: common.Result):
+    print("Size:     ", result.size)
     print("Subtotal: ", result.subtotal)
     print("Fees:     ", result.fees)
     print("Tax:      ", result.tax)

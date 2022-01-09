@@ -76,6 +76,13 @@ Returns quantity in pint Quantity in base units, None if not found
 (Internally uses the quantulum3 Quantity class and then converts it to pint Quantity class)
 """
 def extract_quantity(text: str) -> pint.quantity.Quantity:
+    q = extract_quantity_nonbase(text)
+    return q.to_base_units() if q else None
+
+"""
+Must convert to base units if you want to do manipulations reliably (see extract_quantity above)
+"""
+def extract_quantity_nonbase(text: str) -> pint.quantity.Quantity:
     # Quantulum can parse
     quant_intermediates = quantulum3.parser.parse(text)
     if len(quant_intermediates) == 0:
@@ -88,7 +95,7 @@ def extract_quantity(text: str) -> pint.quantity.Quantity:
     value = quant_intermediate.value
     unit_name = _extract_quantity_helper_rename(quant_intermediate.unit.name)
     quant_final = pint.quantity.Quantity(value, unit_name)
-    return quant_final.to_base_units()
+    return quant_final
 
 """
 Given a list of Quantities and a target Quantity,
@@ -112,10 +119,11 @@ class Menu():
             raise Exception("length of parameter candidate_elements did not match length of parameter qty_texts")
         self.candidate_elements = candidate_elements
         self.quantities = [extract_quantity(qty_text) for qty_text in qty_texts]
+        self.quantities_pretty = [extract_quantity_nonbase(qty_text) for qty_text in qty_texts] # FOR COSMETIC ONLY, NOT CALC
 
-    def choose_element(self, target: pint.quantity.Quantity) -> WebElement:
+    def choose_element(self, target: pint.quantity.Quantity) -> (WebElement, pint.quantity.Quantity):
         idx = shortest_dist_idx(self.quantities, target)
-        return self.candidate_elements[idx]
+        return (self.candidate_elements[idx], self.quantities_pretty[idx])
 
 class Profile():
     """
@@ -150,6 +158,7 @@ class Result():
         self.fees = None
         self.tax = None
         self.total = None
+        self.size: pint.quantity.Quantity = None
 
 class Bot(ABC):
     def __init__(self, shopping_cart_url, headless=True):
