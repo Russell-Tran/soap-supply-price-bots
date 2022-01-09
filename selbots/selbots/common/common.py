@@ -1,6 +1,12 @@
 """
 Zap Sourcing 2021
 """
+# Used here
+from abc import ABC, abstractmethod
+# Used here and children
+from typing import List
+import pint.quantity
+import quantulum3.parser
 # Used by children classes
 import typing
 import time
@@ -17,11 +23,6 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
-
-# Used here and children
-from typing import List
-import pint.quantity
-import quantulum3.parser
 
 # Constant used when a particular website doesn't have a Result attribute (e.g. no fees)
 FREE_PRICE = "$0.00"
@@ -150,7 +151,7 @@ class Result():
         self.tax = None
         self.total = None
 
-class Bot():
+class Bot(ABC):
     def __init__(self, shopping_cart_url, headless=True):
         self.shopping_cart_url = shopping_cart_url
         self.headless = headless
@@ -166,8 +167,16 @@ class Bot():
         self.driver.stop_client() # This needs to be added in order to close the window
         self.driver.quit()
 
-    def run(self, product_url: str, p: Profile):
+    #@abstractmethod
+    def run(self, product_url: str, p: Profile, target_qty: pint.quantity.Quantity):
         raise Exception("run method not implemented for class {}".format(self.__class__.__name__))
+
+    """ Assumes you've already got the page open and everything. (Assumes you're inside the run method).
+    Just some space to write logic to scrape the menu and ingest in as a Menu object.
+    """
+    #@abstractmethod
+    def _generate_menu(self) -> Menu:
+        raise Exception("generate_menu method not implemented for class {}".format(self.__class__.__name__))
 
 
         

@@ -8,10 +8,20 @@ class Brambleberry(Bot):
     def __init__(self, headless=True):
         super().__init__(shopping_cart_url="https://www.brambleberry.com/shoppingbag", headless=headless)
 
-    def run(self, product_url: str, p: Profile):
-        # self._dev(product_url, p)
-        # return
+    def _generate_menu(self) -> Menu:
+        d = self.driver
+        element = d.find_element(By.CSS_SELECTOR, ".swatches")
+        choices = element.find_elements(By.CLASS_NAME, "selectable")
+        choices_deeper = []
+        for choice in choices:
+            try:
+                choices_deeper.append(choice.find_element(By.TAG_NAME, 'a'))
+            except:
+                continue
+        choice_texts = [c.text for c in choices_deeper]
+        return Menu(choices_deeper, choice_texts)
 
+    def run(self, product_url: str, p: Profile, target_qty: pint.quantity.Quantity = pint.quantity.Quantity(26, "lb")):
         d = self.driver
         shopping_cart_url = self.shopping_cart_url
         d.get(product_url)
@@ -26,7 +36,11 @@ class Brambleberry(Bot):
         d.find_element(By.ID, "CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll").click()
         time.sleep(3)
 
-        #d.find_element(By.LINK_TEXT, "5 lbs").click()
+        # Menu logic
+        menu = self._generate_menu()
+        element = menu.choose_element(target_qty)
+        element.click()
+
         time.sleep(1)
         d.find_element(By.ID, "add-to-cart").click()
         d.get(shopping_cart_url)

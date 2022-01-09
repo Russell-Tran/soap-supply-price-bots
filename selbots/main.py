@@ -31,4 +31,4 @@ if __name__ == "__main__":
     #print(extract_quantity("$10.28 for 1 lb") == (1 * ureg.lb).to_base_units())
     #extract_quantity("1 fl. oz") == (10 * ureg.floz).to_base_units()
 
-    generic_sim(Brambleberry(headless=False), basic_profile, basic_url)
+    print_result(generic_sim(Brambleberry(headless=False), basic_profile, basic_url))
