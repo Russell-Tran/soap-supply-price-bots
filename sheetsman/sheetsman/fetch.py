@@ -12,7 +12,7 @@ def sanity(sheetdocname):
     return sh.worksheet("sanity").get('A1')
 
 def worker(datum):
-    row, product_url, columns, sheetdocname = datum
+    row, product_url, columns, sheetdocname, target_qty = datum
     gc = gspread.service_account(filename='config/service_account.json')
     sh = gc.open(sheetdocname)
     sheet = sh.sheet1
@@ -33,7 +33,7 @@ def worker(datum):
         "zipcode" : "92673"
     })
     try:
-        result = generic_sim(bot, profile, product_url)
+        result = generic_sim(bot, profile, product_url, target_qty)
     except:
         return
     size_col = columns['size']
@@ -55,7 +55,13 @@ def worker(datum):
 def fulfill(sheetdocname):
     gc = gspread.service_account(filename='config/service_account.json')
     sh = gc.open(sheetdocname)
-    sheet = sh.sheet1
+    sheet = sh.get_worksheet(0)
+
+    config_sheet = sh.get_worksheet(1)
+    target_qty = config_sheet.acell('A1').value
+    target_qty = common.extract_quantity(target_qty)
+    print(f"target quantity is {target_qty}")
+
     column_header = sheet.row_values(1)
 
     product_url_col = column_header.index("product_url") + 1
@@ -87,14 +93,14 @@ def fulfill(sheetdocname):
     product_urls = sheet.col_values(product_url_col)[1:]
     print(f"product_url values:\n {product_urls}")
 
-    input_data = [(i+2, product_urls[i], columns, sheetdocname) for i in range(len(product_urls))]
+    input_data = [(i+2, product_urls[i], columns, sheetdocname, target_qty) for i in range(len(product_urls))]
     p = multiprocessing.Pool(6)
     p.map(worker, input_data)
     
-def generic_sim(b: common.Bot, profile: common.Profile, product_url: str) -> common.Result:
+def generic_sim(b: common.Bot, profile: common.Profile, product_url: str, target_qty) -> common.Result:
     b.start()
     try:
-        result = b.run(product_url, profile)
+        result = b.run(product_url, profile, target_qty)
     except Exception as e:
         if b.headless:
             b.stop()
