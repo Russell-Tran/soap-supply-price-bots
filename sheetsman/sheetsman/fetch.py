@@ -3,6 +3,8 @@ import selbots.common as common
 import gspread
 import multiprocessing
 import selbots.picking
+import pendulum
+from .elasticsearch import *
 
 CONVERT = "0ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -34,7 +36,8 @@ def worker(datum):
     })
     try:
         result = generic_sim(bot, profile, product_url, target_qty)
-    except:
+    except Exception as e:
+        print(e)
         return
     size_col = columns['size']
     subtotal_col = columns['subtotal']
@@ -108,3 +111,102 @@ def generic_sim(b: common.Bot, profile: common.Profile, product_url: str, target
     if b.headless:
         b.stop()
     return result
+
+class SheetOperator:
+    CONFIG_LAYOUT = [
+        "query_raw",
+        "target_qty",
+        "address",
+        "city",
+        "state",
+        "country",
+        "zipcode"
+    ]
+
+    def __init__(self, sheetdocname):
+        self.sheetdocname = sheetdocname
+        gc = gspread.service_account(filename='config/service_account.json')
+        self.sh = gc.open(sheetdocname)
+    
+    def paste_config_layout(self):
+        sh = self.sh
+        try:
+            worksheet = sh.worksheet("config")
+        except:
+            worksheet = sh.add_worksheet(title="config", rows=1000, cols=26)
+        for i, parameter in enumerate(self.CONFIG_LAYOUT):
+            row_number = i + 1
+            worksheet.update(f'A{row_number}', parameter)
+
+    def get_config(self):
+        sh = self.sh
+        worksheet = sh.worksheet("config")
+        output = {}
+        for i, parameter in enumerate(self.CONFIG_LAYOUT):
+            row_number = i + 1
+            output[parameter] = worksheet.acell(f'B{row_number}').value
+        return output
+
+    def create_result_sheet(self):
+        sh = self.sh
+        return sh.add_worksheet(title=str(pendulum.now("America/Los_Angeles")), rows=1000, cols=26)
+
+    def paste_search_results(self, worksheet, results):
+        ROW_OFFSET = 2
+        for i, result in enumerate(results):
+            row_number = i + ROW_OFFSET
+            url = result['url']
+            title = result['title']
+            worksheet.update(f'A{row_number}', url)
+            worksheet.update(f'B{row_number}', title)
+
+    def run_fulfillment(self, sheet, target_qty):
+        column_header = sheet.row_values(1)
+
+        product_url_col = 1
+        title_url_col = product_url_col + 1
+        size_col = title_url_col + 1
+        subtotal_col = size_col + 1
+        fees_col = subtotal_col + 1
+        tax_col = fees_col + 1
+        shipping_col = tax_col + 1
+        total_col = shipping_col + 1
+
+        sheet.update(CONVERT[product_url_col] + "1", "product_url")
+        sheet.update(CONVERT[title_url_col] + "1", "product_title")
+        sheet.update(CONVERT[size_col] + "1", "size")
+        sheet.update(CONVERT[subtotal_col] + "1", "subtotal")
+        sheet.update(CONVERT[fees_col] + "1", "fees")
+        sheet.update(CONVERT[tax_col] + "1", "tax")
+        sheet.update(CONVERT[shipping_col] + "1", "shipping")
+        sheet.update(CONVERT[total_col] + "1", "total")
+
+        columns = {
+            'size' : size_col,
+            'subtotal' : subtotal_col,
+            'fees' : fees_col,
+            'tax' : tax_col,
+            'shipping' : shipping_col,
+            'total' : total_col
+        }
+
+        product_urls = sheet.col_values(product_url_col)[1:]
+        print(f"product_url values:\n {product_urls}")
+
+        input_data = [(i+2, product_urls[i], columns, self.sheetdocname, target_qty) for i in range(len(product_urls))]
+        p = multiprocessing.Pool(6)
+        p.map(worker, input_data)
+
+    def orchestrate(self):
+        config = self.get_config()
+        worksheet = self.create_result_sheet()
+        query = config['query_raw']
+        search_results = search(query)
+        self.paste_search_results(worksheet, search_results)
+        print(search_results)
+
+        target_qty = config['target_qty'] # target_qty = common.extract_quantity(target_qty)
+        self.run_fulfillment(worksheet, target_qty)
+        
+
+# NOTE: weird multiprocessing use of sheetdocname is required since you can't pickle the gspread objects directly

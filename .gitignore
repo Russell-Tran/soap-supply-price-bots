@@ -4,6 +4,7 @@ geckodriver.log
 selenium_scripts/__pycache__
 dispatch/__pycache__/
 sheetsman/config/service_account.json
+sheetsman/config/elasticsearch.json
 sheetsman/sheetsman/__pycache__
 sheetsman/tests/__pycache__
 selbots/selbots/common/__pycache__
