@@ -156,9 +156,12 @@ class SheetOperator:
         for i, result in enumerate(results):
             row_number = i + ROW_OFFSET
             url = result['url']
-            title = result['title']
             worksheet.update(f'A{row_number}', url)
-            worksheet.update(f'B{row_number}', title)
+            try:
+                title = result['title']
+                worksheet.update(f'B{row_number}', title)
+            except:
+                pass
 
     def run_fulfillment(self, sheet, target_qty):
         column_header = sheet.row_values(1)
