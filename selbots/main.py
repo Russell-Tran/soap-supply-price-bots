@@ -1,3 +1,7 @@
+"""
+Use this script for manual inspection of scripts
+"""
+
 from tests.helper import *
 from tests.sites.test_wholesale_supplies_plus import basic_url
 #from tests.sites.test_scent_sational_supply import basic_url
@@ -18,6 +22,12 @@ from quantulum3 import parser as quantparser
 
 
 if __name__ == "__main__":
+
+
+
+    print_result(generic_sim_qty(EssentialDepot(headless=False), basic_profile, "https://www.essentialdepot.com/product/COCONUT-1-QUART.html", '5 lbs'))
+
+
     # result = generic_sim(BulkNaturalOils(headless=False), basic_penn_profile, basic_url)
     # print_result(result)
 
@@ -32,7 +42,10 @@ if __name__ == "__main__":
     #print(extract_quantity("$10.28 for 1 lb") == (1 * ureg.lb).to_base_units())
     #extract_quantity("1 fl. oz") == (10 * ureg.floz).to_base_units()
 
-    print_result(generic_sim_qty(WholesaleSuppliesPlus(headless=False), basic_profile, basic_url, '5 lbs'))
+    #print_result(generic_sim_qty(WholesaleSuppliesPlus(headless=False), basic_profile, basic_url, '5 lbs'))
+
+    #bno_url = "https://bulknaturaloils.com/coconut-oil-rbd.html"
+    #print_result(generic_sim_qty(BulkNaturalOils(headless=False), basic_profile, bno_url , '5 lbs'))
 
     #basic_url = "https://scentsationalsupply.com/peak-candle-type/watermelon-peak-type"
     #print_result(generic_sim_qty(ScentSationalSupply(headless=False), basic_profile, basic_url, '8 floz'))

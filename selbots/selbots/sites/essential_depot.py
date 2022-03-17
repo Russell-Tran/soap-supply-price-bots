@@ -15,8 +15,10 @@ class EssentialDepot(Bot):
         # For this website, each quantity has its own page, so no need for a menu
         chosen_qty = extract_quantity_nonbase(d.find_element(By.CSS_SELECTOR, "h1.column").text)
 
+        print("DEBUG ED ALPHA")
         d.find_element(By.ID, "js-add-to-cart").click()
         d.find_element(By.ID, "js-mini-basket").click()
+        print("DEBUG ED BETA")
 
         time.sleep(3)
         element = d.find_element(By.XPATH, "/html/body/div[3]/header/div[2]/div[3]/div[1]/div[3]/a")
@@ -60,6 +62,11 @@ class EssentialDepot(Bot):
         
         d.find_element(By.CSS_SELECTOR, "input.bg-red").click() # "Continue to Shipping/Payment"
         time.sleep(3)
+
+        try:
+            d.find_element(By.CSS_SELECTOR, "p.column:nth-child(2) > input:nth-child(2)").click() # Bypass Greener Life Club Member Offer
+        except:
+            pass
 
         result = Result()
         result.size = chosen_qty
