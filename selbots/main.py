@@ -23,9 +23,10 @@ from quantulum3 import parser as quantparser
 
 if __name__ == "__main__":
 
+    print_result(generic_sim_qty(ChemistryStore(headless=False), basic_profile, "https://www.myfortune3cart.com/chemstore13/Natural_Oils-Coconut_Oil_76_Degree.html", '5 lbs'))
+    #print_result(generic_sim_qty(MountainRoseHerbs(headless=False), basic_profile, "https://mountainroseherbs.com/unrefined-coconut-oil", '5 lbs'))
 
-
-    print_result(generic_sim_qty(EssentialDepot(headless=False), basic_profile, "https://www.essentialdepot.com/product/COCONUT-1-QUART.html", '5 lbs'))
+    #print_result(generic_sim_qty(EssentialDepot(headless=False), basic_profile, "https://www.essentialdepot.com/product/COCONUT-1-QUART.html", '5 lbs'))
 
 
     # result = generic_sim(BulkNaturalOils(headless=False), basic_penn_profile, basic_url)

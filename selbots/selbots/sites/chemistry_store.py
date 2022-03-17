@@ -5,7 +5,9 @@ from selbots.common import *
 
 class ChemistryStore(Bot):
     def __init__(self, headless=True):
-        super().__init__(shopping_cart_url="https://www.chemistrystore.com/viewcart.cgi#checkoutformlink", headless=headless)
+        #super().__init__(shopping_cart_url="https://www.chemistrystore.com/viewcart.cgi#checkoutformlink", headless=headless)
+        # Strange scenario where chemistrystore.com is making use of myfortune3cart.com
+        super().__init__(shopping_cart_url="https://www.myfortune3cart.com/chemstore13/viewcart.cgi#checkoutformlink", headless=headless)
 
     def _generate_menu(self) -> Menu:
         d = self.driver

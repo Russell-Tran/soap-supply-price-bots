@@ -11,6 +11,8 @@ def pick(url: str) -> Bot:
         return BulkNaturalOils()
     elif "chemistrystore.com" in url:
         return ChemistryStore()
+    elif "myfortune3cart.com" in url: # TEMPORARY PATCH FOR THE FACT THAT CHEMISTRY STORE USES THIS ALTERNATE URL TOO
+        return ChemistryStore() 
     elif "essentialdepot.com" in url:
         return EssentialDepot()
     elif "mountainroseherbs.com" in url:
