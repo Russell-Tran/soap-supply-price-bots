@@ -9,6 +9,7 @@ class WholesaleSuppliesPlus(Bot):
         element = d.find_element(By.CSS_SELECTOR, "#Buy > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(1)")
         choices = element.find_elements(By.TAG_NAME, 'input')
         choice_texts = element.text.split('\n')
+        print(f"DEBUG: choices = {choices}, choice_texts = {choice_texts}")
         return Menu(choices, choice_texts)
 
     def run(self, product_url: str, p: Profile, target_qty: pint.quantity.Quantity = None):

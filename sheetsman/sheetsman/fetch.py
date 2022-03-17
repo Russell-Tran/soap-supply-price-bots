@@ -8,6 +8,27 @@ from .elasticsearch import *
 
 CONVERT = "0ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
+
+# ===== DEV CONSTANTS =====
+PROFILE_CALIFORNIA = common.Profile({
+    "first_name" : "John",
+    "last_name" : "Snow",
+    "email" : "winteriscoming@gmail.com",
+    "phone" : "(949) 361-8200",
+    "fax" : "(949) 493-8729",
+    "company" : "Cool Soap, Inc.",
+    "address" : "15 Calle Loyola",
+    "address_2" : "Suite #15",
+    "city" : "San Clemente",
+    "state" : "California",
+    "country" : "United States",
+    "zipcode" : "92673"
+})
+
+
+# ============================
+
+
 def sanity(sheetdocname):
     gc = gspread.service_account(filename='config/service_account.json')
     sh = gc.open(sheetdocname)
@@ -20,20 +41,11 @@ def worker(datum):
     sheet = sh.sheet1
     print(f"Working on {product_url}...")
     bot = selbots.selbots.picking.pick(product_url)
-    profile = common.Profile({
-        "first_name" : "John",
-        "last_name" : "Snow",
-        "email" : "winteriscoming@gmail.com",
-        "phone" : "(949) 361-8200",
-        "fax" : "(949) 493-8729",
-        "company" : "Cool Soap, Inc.",
-        "address" : "15 Calle Loyola",
-        "address_2" : "Suite #15",
-        "city" : "San Clemente",
-        "state" : "California",
-        "country" : "United States",
-        "zipcode" : "92673"
-    })
+
+    # === HARDCODED ===
+    profile = PROFILE_CALIFORNIA
+    # =================
+
     try:
         result = generic_sim(bot, profile, product_url, target_qty)
     except Exception as e:
@@ -45,6 +57,7 @@ def worker(datum):
     tax_col = columns['tax']
     shipping_col = columns['shipping']
     total_col = columns['total']
+    size_base_units_col = columns['size_base_units']
 
     sheet.update(CONVERT[size_col] + str(row), str(result.size))
     sheet.update(CONVERT[subtotal_col] + str(row), result.subtotal)
@@ -52,6 +65,7 @@ def worker(datum):
     sheet.update(CONVERT[tax_col] + str(row), result.tax)
     sheet.update(CONVERT[shipping_col] + str(row), result.shipping)
     sheet.update(CONVERT[total_col] + str(row), result.total)
+    sheet.update(CONVERT[size_base_units_col] + str(row), str(result.size.to_base_units()))
 
     print(f"Done! {result}")
     
@@ -74,6 +88,7 @@ def fulfill(sheetdocname):
     tax_col = fees_col + 1
     shipping_col = tax_col + 1
     total_col = shipping_col + 1
+    size_base_units_col = total_col + 1
 
     sheet.update(CONVERT[size_col] + "1", "size")
     sheet.update(CONVERT[subtotal_col] + "1", "subtotal")
@@ -81,6 +96,7 @@ def fulfill(sheetdocname):
     sheet.update(CONVERT[tax_col] + "1", "tax")
     sheet.update(CONVERT[shipping_col] + "1", "shipping")
     sheet.update(CONVERT[total_col] + "1", "total")
+    sheet.update(CONVERT[size_base_units_col] + "1", "size_base_units")
 
 
 
@@ -90,7 +106,8 @@ def fulfill(sheetdocname):
         'fees' : fees_col,
         'tax' : tax_col,
         'shipping' : shipping_col,
-        'total' : total_col
+        'total' : total_col,
+        'size_base_units' : size_base_units_col
     }
 
     product_urls = sheet.col_values(product_url_col)[1:]
@@ -166,7 +183,7 @@ class SheetOperator:
     def run_fulfillment(self, sheet, target_qty):
         column_header = sheet.row_values(1)
 
-        product_url_col = 1
+        product_url_col = column_header.index("product_url") + 1
         title_url_col = product_url_col + 1
         size_col = title_url_col + 1
         subtotal_col = size_col + 1
@@ -210,6 +227,7 @@ class SheetOperator:
 
         target_qty = config['target_qty'] # target_qty = common.extract_quantity(target_qty)
         self.run_fulfillment(worksheet, target_qty)
+
         
 
 # NOTE: weird multiprocessing use of sheetdocname is required since you can't pickle the gspread objects directly
