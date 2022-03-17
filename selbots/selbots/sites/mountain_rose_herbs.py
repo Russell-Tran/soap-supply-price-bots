@@ -68,7 +68,10 @@ class MountainRoseHerbs(Bot):
         result.size = chosen_qty
         result.subtotal = d.find_element(By.CSS_SELECTOR, ".product-price").text
         result.shipping = d.find_element(By.CSS_SELECTOR, "section.cart-section:nth-child(3) > div:nth-child(2) > div:nth-child(1) > span:nth-child(2) > span:nth-child(1)").text
-        result.tax = d.find_element(By.CSS_SELECTOR, ".changeHighlight-enter-done > span:nth-child(2) > span:nth-child(1)").text
+        try:
+            result.tax = d.find_element(By.CSS_SELECTOR, ".changeHighlight-enter-done > span:nth-child(2) > span:nth-child(1)").text
+        except:
+            result.tax = d.find_element(By.CSS_SELECTOR, "section.cart-section:nth-child(3) > div:nth-child(3) > div:nth-child(1) > span:nth-child(2) > span:nth-child(1)").text
         result.fees = FREE_PRICE
         result.total = d.find_element(By.CSS_SELECTOR, ".cart-priceItem--total > span:nth-child(2) > span:nth-child(1)").text
         return result
