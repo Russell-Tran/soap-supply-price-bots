@@ -69,10 +69,10 @@ def worker(datum):
 
     print(f"Done! {result}")
     
-def fulfill(sheetdocname):
+def fulfill(sheetdocname, sheetidx=0):
     gc = gspread.service_account(filename='config/service_account.json')
     sh = gc.open(sheetdocname)
-    sheet = sh.get_worksheet(0)
+    sheet = sh.get_worksheet(sheetidx)
 
     config_sheet = sh.get_worksheet(1)
     target_qty = config_sheet.acell('A1').value
