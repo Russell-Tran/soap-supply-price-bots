@@ -15,3 +15,4 @@ selbots/tests/__pycache__
 selbots/tests/common/__pycache__/
 selbots/tests/picking/__pycache__
 selbots/tests/sites/__pycache__
+.vscode
