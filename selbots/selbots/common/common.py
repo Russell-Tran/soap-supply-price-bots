@@ -3,6 +3,7 @@ Zap Sourcing 2021
 """
 # Used here
 from abc import ABC, abstractmethod
+from ast import excepthandler
 # Used here and children
 from typing import List
 import pint.quantity
@@ -94,8 +95,33 @@ def extract_quantity_nonbase(text: str) -> pint.quantity.Quantity:
     # Pint can make the quantity manipulatable 
     value = quant_intermediate.value
     unit_name = _extract_quantity_helper_rename(quant_intermediate.unit.name)
-    quant_final = pint.quantity.Quantity(value, unit_name)
+    quant_final = GLOBAL_UREG.Quantity(value, unit_name)
     return quant_final
+
+
+ # ==========================================================
+
+def ugly_interventionist_ureg():
+    # NOTE: This is a quick hack inspired from https://stackoverflow.com/questions/50866545/volume-to-mass-transformation-not-recognized-in-pint
+    # Have not thought about this deeply
+    # Main reason is to be able to interchange between mass and volume
+    ureg = pint.UnitRegistry()
+    c = pint.Context('ctx')
+    def vtom(ureg, x):
+        print ("vtom(%s, %s)" % (ureg, x))
+        density = 1.0 * ureg.gram / ureg.ml
+        return x/density
+    def vtom2(ureg, x):
+        print ("vtom2(%s, %s)" % (ureg, x))
+        density = 1.0 * ureg.gram / ureg.ml
+        return x*density
+    c.add_transformation('[volume]', '[mass]', vtom2)
+    c.add_transformation('[mass]', '[volume]', vtom)
+    ureg.add_context(c)
+    return ureg
+
+# Really bad form but oh well 
+GLOBAL_UREG = ugly_interventionist_ureg()
 
 """
 Given a list of Quantities and a target Quantity,
@@ -114,6 +140,8 @@ def shortest_dist_idx(choices: List[pint.quantity.Quantity], target: pint.quanti
         # https://nurturesoap.com/collections/perfect-in-soap-fragrance-oils/products/black-raspberry-vanilla-fragrance-oil?variant=21140006895693
         # TODO: One way to implement this would be to convert floz to oz based on weight of water, and some
         # similar batching for all things like this. For now we are just going to ignore the choice of floz
+        """
+        # This is silly but basically for now we are repeating the code above except skipping any option that causes an error
         refined_choices = []
         for i, q in enumerate(choices):
             try:
@@ -122,7 +150,27 @@ def shortest_dist_idx(choices: List[pint.quantity.Quantity], target: pint.quanti
             except:
                 continue
         _, idx = min(refined_choices)
+        """
+
+        # NOTE: This is a quick hack inspired from https://stackoverflow.com/questions/50866545/volume-to-mass-transformation-not-recognized-in-pint
+        # Have not thought about this deeply
+        try:
+            choices =  [q.to('floz', 'ctx') for q in choices]
+            _, idx = min([(abs(target - q), i) for i, q in enumerate(choices) if q is not None])
+        except:
+            try: 
+                choices =  [q.to('gram', 'ctx') for q in choices]
+                _, idx = min([(abs(target - q), i) for i, q in enumerate(choices) if q is not None])
+            except Exception as e:
+                raise e
+                # This is so ugly i am very sorry
+
     return idx
+
+
+
+
+ # ==========================================================
 
 class Menu():
     """ 
