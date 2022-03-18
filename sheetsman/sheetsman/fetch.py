@@ -35,10 +35,14 @@ def sanity(sheetdocname):
     return sh.worksheet("sanity").get('A1')
 
 def worker(datum):
-    row, product_url, columns, sheetdocname, target_qty = datum
+    try:
+        row, product_url, columns, sheetdocname, target_qty, sheetidx = datum
+    except:
+        row, product_url, columns, sheetdocname, target_qty = datum
+        sheetidx = 0
     gc = gspread.service_account(filename='config/service_account.json')
     sh = gc.open(sheetdocname)
-    sheet = sh.sheet1
+    sheet = sh.get_worksheet(sheetidx)
     print(f"Working on {product_url}...")
     bot = selbots.selbots.picking.pick(product_url)
 
@@ -70,6 +74,7 @@ def worker(datum):
     print(f"Done! {result}")
     
 def fulfill(sheetdocname, sheetidx=0):
+    print(f"FULFILLING SHEET {sheetidx}")
     gc = gspread.service_account(filename='config/service_account.json')
     sh = gc.open(sheetdocname)
     sheet = sh.get_worksheet(sheetidx)
@@ -113,7 +118,7 @@ def fulfill(sheetdocname, sheetidx=0):
     product_urls = sheet.col_values(product_url_col)[1:]
     print(f"product_url values:\n {product_urls}")
 
-    input_data = [(i+2, product_urls[i], columns, sheetdocname, target_qty) for i in range(len(product_urls))]
+    input_data = [(i+2, product_urls[i], columns, sheetdocname, target_qty, sheetidx) for i in range(len(product_urls))]
     p = multiprocessing.Pool(6)
     p.map(worker, input_data)
     
