@@ -263,5 +263,5 @@ if __name__ == '__main__':
     # ecommerce_scatter()
     # amazon_scatter()
     # superimposed_scatter()
-    # declining_functionality()
-    usersurvey()
+    declining_functionality()
+    #usersurvey()
