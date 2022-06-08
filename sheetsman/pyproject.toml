@@ -8,7 +8,7 @@ authors = ["Russell Tran <tranrl@stanford.edu>"]
 python = "^3.8"
 gspread = "^5.1.1"
 selbots = {path = "../selbots", develop = true}
-pendulum = "^2.1.2"
+pendulum = "2.0.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
