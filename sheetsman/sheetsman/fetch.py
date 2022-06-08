@@ -236,3 +236,6 @@ class SheetOperator:
         
 
 # NOTE: weird multiprocessing use of sheetdocname is required since you can't pickle the gspread objects directly
+
+if __name__ == "__main__":
+    print("helo werld")
